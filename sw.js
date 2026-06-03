@@ -1,5 +1,5 @@
 /* 싱가포르 여행 일정 - 오프라인 캐시 (Service Worker) */
-const CACHE = 'sg-trip-v3';
+const CACHE = 'sg-trip-v4';
 const ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', function (e) {
@@ -46,7 +46,7 @@ self.addEventListener('fetch', function (e) {
     // 느린/행(hang) 네트워크(배 위 캡티브·위성 와이파이 등) 대비:
     // 3초 내 응답 없으면 캐시로 폴백, 캐시도 없으면 네트워크를 계속 기다린다.
     var timeout = new Promise(function (resolve) {
-      setTimeout(function () { fromCache().then(function (c) { resolve(c || network); }); }, 3000);
+      setTimeout(function () { fromCache().then(function (c) { resolve(c || network.catch(fromCache)); }); }, 3000);
     });
     e.respondWith(Promise.race([network.catch(fromCache), timeout]));
   } else {

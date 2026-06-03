@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+
+# Node / 빌드 산출물
+node_modules/
+*.log
+dist/
+build/
+
+# 🔒 민감·로컬 전용 문서 (절대 공개 저장소에 올리지 않음)
+CLAUDE.md
+cruise-menu.md
+.claude/
+*.local

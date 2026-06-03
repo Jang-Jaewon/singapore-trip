@@ -243,7 +243,6 @@
       <div class="e"><div class="ic">💱</div><div class="et"><b>통화</b><span>싱가포르 달러 (SGD, S$) · 카드 보편적 · 호커센터는 현금</span></div></div>
       <div class="e"><div class="ic">🍽️</div><div class="et"><b>팁 문화</b><span>팁 불필요 (식당 서비스차지 10% 포함)</span></div></div>
       <div class="e"><div class="ic">🚇</div><div class="et"><b>교통</b><span>MRT·버스는 일반 신용/체크카드 탭으로 탑승 · 보조로 Grab 앱</span></div></div>
-      <div class="e"><div class="ic">📡</div><div class="et"><b>오프라인</b><span id="offStatus">확인 중…</span></div></div>
       <div class="e"><div class="ic">🌧️</div><div class="et"><b>날씨 팁</b><span>30°C+ 무더위 · 실내 냉방 강함(가디건) · 스콜 대비 우산</span></div></div>
       <div class="e"><div class="ic">🚨</div><div class="et"><b>긴급 연락</b><span>경찰 <a href="tel:999">999</a> · 구급/소방 <a href="tel:995">995</a> · 한국대사관 <a href="tel:+6562561188">+65 6256 1188</a></span></div></div>
     </div>
@@ -735,15 +734,6 @@ function initActiveTab(){
   },{rootMargin:'-30% 0px -60% 0px',threshold:0});
   Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
 }
-/* 오프라인 사용 준비 상태 */
-function updateOffline(){
-  var el=document.getElementById('offStatus'); if(!el)return;
-  var online=navigator.onLine;
-  var ready=('serviceWorker' in navigator)&&!!navigator.serviceWorker.controller;
-  if(ready) el.textContent='저장됨 ✅ 인터넷 없이 사용 가능'+(online?'':' · 현재 오프라인');
-  else el.textContent=online?'온라인에서 한 번 더 열면 오프라인 저장됩니다':'오프라인 — 저장 전이라 일부 안 보일 수 있어요';
-}
-
 /* ===== D-day ===== */
 function setDday(){
   /* 출국 6/4 기준 카운트다운, 도착 6/5 = 여행 Day 1 */
@@ -780,11 +770,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   render(); setDday(); initActiveTab();
   /* 오프라인 캐시 (크루즈 등 인터넷 없는 곳 대비) — https 배포 시에만 작동 */
-  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){}
-    if(navigator.serviceWorker.addEventListener) navigator.serviceWorker.addEventListener('controllerchange',updateOffline); }
-  updateOffline();
-  window.addEventListener('online',updateOffline);
-  window.addEventListener('offline',updateOffline);
+  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }
   setInterval(highlightNow,60000);
 
   /* '지금' 점프 버튼 */

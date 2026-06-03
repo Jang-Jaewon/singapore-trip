@@ -718,14 +718,30 @@ function getTodayDay(){
 function highlightNow(){
   var nowMin=nowMinutes();
   var todayDay=getTodayDay();
+  /* 전체 초기화 */
   document.querySelectorAll('.card').forEach(function(card){
-    var tag=card.querySelector('.nowtag'); tag.style.display='none'; card.classList.remove('now'); card.removeAttribute('aria-current');
-    if(todayDay===null)return;
-    if(+card.getAttribute('data-day')!==todayDay)return;
-    var s=card.getAttribute('data-start'),e=card.getAttribute('data-end');
-    if(s===''||e==='')return;
-    if(nowMin>=+s&&nowMin<+e){tag.style.display='';card.classList.add('now');card.setAttribute('aria-current','true');}
+    card.querySelector('.nowtag').style.display='none'; card.classList.remove('now'); card.removeAttribute('aria-current');
   });
+  /* 오늘 day의 카드만, 순서대로 보며 진행 중 1개 강조.
+     종료시각 없는 항목(예: "12:00~저녁","21:00 이후","14:55")은
+     다음(시작 있는) 카드의 시작을 가상 종료로, 없으면 자정(1440)으로 본다. */
+  if(todayDay!==null){
+    var sec=document.getElementById('day'+todayDay);
+    if(sec){
+      var cards=Array.prototype.slice.call(sec.querySelectorAll('.card'));
+      for(var k=0;k<cards.length;k++){
+        var s=cards[k].getAttribute('data-start'); if(s==='')continue;
+        var st=+s, en=cards[k].getAttribute('data-end'), end;
+        if(en!==''){ end=+en; }
+        else { end=1440; for(var j=k+1;j<cards.length;j++){ var ns=cards[j].getAttribute('data-start'); if(ns!==''){ end=+ns; break; } } }
+        if(nowMin>=st&&nowMin<end){
+          cards[k].querySelector('.nowtag').style.display='';
+          cards[k].classList.add('now'); cards[k].setAttribute('aria-current','true');
+          break;
+        }
+      }
+    }
+  }
   /* 종일·시간없는 항목(크루즈 등) day 포함, 오늘 day-head에 '오늘' 칩 */
   document.querySelectorAll('.today-chip').forEach(function(c){c.remove();});
   if(todayDay!==null){

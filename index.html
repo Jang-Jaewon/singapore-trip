@@ -103,6 +103,8 @@
   .tab.d5{border-top:3px solid #1aa0d4;} .tab.d6{border-top:3px solid #14a877;}
   .tab.d7{border-top:3px solid #64748b;}
   .tab.misc{border-top:3px solid #14b8a6;}
+  .tab.active{background:var(--tint);border-color:color-mix(in srgb,var(--brand) 32%,var(--line));}
+  .tab.active,.tab.active small{color:var(--brand);}
 
   /* Toolbar */
   .toolbar{display:flex;align-items:center;gap:10px;margin-top:18px;}
@@ -118,6 +120,7 @@
   /* Day */
   .day{scroll-margin-top:78px;margin-top:28px;}
   .day-head{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
+  .today-chip{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);padding:2px 9px;border-radius:999px;letter-spacing:.2px;}
   .day-badge{font-size:12.5px;font-weight:800;color:#fff;padding:4px 12px;border-radius:999px;flex-shrink:0;box-shadow:var(--shadow);}
   .b1{background:#2f6fe0;} .b2{background:#7c4ee0;} .b3{background:#f3811f;} .b4{background:#e0443a;}
   .b5{background:#1aa0d4;} .b6{background:#14a877;} .b7{background:#64748b;}
@@ -196,6 +199,8 @@
   .imodal .ihint{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.5;}
   .imodal .close{margin-top:18px;width:100%;padding:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;}
   .top-btn{position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);z-index:40;width:44px;height:44px;border-radius:50%;border:none;background:var(--brand);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 14px rgba(15,118,110,.4);opacity:0;pointer-events:none;transition:opacity .25s;}
+  .now-btn{position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom) + 72px);z-index:40;height:44px;padding:0 15px;border-radius:999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(15,118,110,.4);opacity:0;pointer-events:none;transition:opacity .25s;display:flex;align-items:center;gap:6px;}
+  .now-btn.show{opacity:1;pointer-events:auto;}
   .top-btn.show{opacity:1;pointer-events:auto;}
 </style>
 </head>
@@ -238,6 +243,7 @@
       <div class="e"><div class="ic">💱</div><div class="et"><b>통화</b><span>싱가포르 달러 (SGD, S$) · 카드 보편적 · 호커센터는 현금</span></div></div>
       <div class="e"><div class="ic">🍽️</div><div class="et"><b>팁 문화</b><span>팁 불필요 (식당 서비스차지 10% 포함)</span></div></div>
       <div class="e"><div class="ic">🚇</div><div class="et"><b>교통</b><span>MRT·버스는 일반 신용/체크카드 탭으로 탑승 · 보조로 Grab 앱</span></div></div>
+      <div class="e"><div class="ic">📡</div><div class="et"><b>오프라인</b><span id="offStatus">확인 중…</span></div></div>
       <div class="e"><div class="ic">🌧️</div><div class="et"><b>날씨 팁</b><span>30°C+ 무더위 · 실내 냉방 강함(가디건) · 스콜 대비 우산</span></div></div>
       <div class="e"><div class="ic">🚨</div><div class="et"><b>긴급 연락</b><span>경찰 <a href="tel:999">999</a> · 구급/소방 <a href="tel:995">995</a> · 한국대사관 <a href="tel:+6562561188">+65 6256 1188</a></span></div></div>
     </div>
@@ -482,6 +488,7 @@
   </section>
 </div>
 
+<button class="now-btn" id="nowBtn" aria-label="지금 일정으로">🔴 지금</button>
 <button class="top-btn" id="topBtn" aria-label="맨 위로">↑</button>
 
 <div class="imodal" id="imodal">
@@ -674,20 +681,67 @@ function refreshDone(){
 }
 
 /* ===== 지금 일정 하이라이트 ===== */
+function nowMinutes(){var d=new Date();return d.getHours()*60+d.getMinutes();}
+function getTodayDay(){
+  var n=new Date();
+  var ymd=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+  var td=null; DAYS.forEach(function(d){if(d.date===ymd)td=d.n;});
+  return td;
+}
 function highlightNow(){
-  var now=new Date();
-  var ymd=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-  var nowMin=now.getHours()*60+now.getMinutes();
-  var todayDay=null;
-  DAYS.forEach(function(d){if(d.date===ymd)todayDay=d.n;});
+  var nowMin=nowMinutes();
+  var todayDay=getTodayDay();
   document.querySelectorAll('.card').forEach(function(card){
-    var tag=card.querySelector('.nowtag'); tag.style.display='none'; card.classList.remove('now');
+    var tag=card.querySelector('.nowtag'); tag.style.display='none'; card.classList.remove('now'); card.removeAttribute('aria-current');
     if(todayDay===null)return;
     if(+card.getAttribute('data-day')!==todayDay)return;
     var s=card.getAttribute('data-start'),e=card.getAttribute('data-end');
     if(s===''||e==='')return;
-    if(nowMin>=+s&&nowMin<+e){tag.style.display='';card.classList.add('now');}
+    if(nowMin>=+s&&nowMin<+e){tag.style.display='';card.classList.add('now');card.setAttribute('aria-current','true');}
   });
+  /* 종일·시간없는 항목(크루즈 등) day 포함, 오늘 day-head에 '오늘' 칩 */
+  document.querySelectorAll('.today-chip').forEach(function(c){c.remove();});
+  if(todayDay!==null){
+    var head=document.querySelector('#day'+todayDay+' .day-head');
+    if(head){var chip=document.createElement('span');chip.className='today-chip';chip.textContent='오늘';head.appendChild(chip);}
+  }
+  var nb=document.getElementById('nowBtn');
+  if(nb){ if(todayDay!==null)nb.classList.add('show'); else nb.classList.remove('show'); }
+}
+/* '지금' 점프 대상: now 카드 → 없으면 오늘의 다음 예정 카드 → 없으면 오늘 섹션 */
+function nowTarget(todayDay){
+  var n=document.querySelector('.card.now'); if(n)return n;
+  if(todayDay===null)return null;
+  var sec=document.getElementById('day'+todayDay); if(!sec)return null;
+  var nm=nowMinutes(), cards=sec.querySelectorAll('.card');
+  for(var i=0;i<cards.length;i++){
+    var s=cards[i].getAttribute('data-start');
+    if(s!==''&&+s>=nm)return cards[i];
+  }
+  return sec;
+}
+/* 스크롤 위치에 따라 활성 탭 표시 */
+function initActiveTab(){
+  if(!('IntersectionObserver' in window))return;
+  var tabs=document.querySelectorAll('.tabs .tab'), map={};
+  tabs.forEach(function(t){map[t.getAttribute('href').slice(1)]=t;});
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting)return;
+      tabs.forEach(function(t){t.classList.remove('active');});
+      var t=map[en.target.id];
+      if(t){t.classList.add('active');t.scrollIntoView({block:'nearest',inline:'center'});}
+    });
+  },{rootMargin:'-30% 0px -60% 0px',threshold:0});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
+}
+/* 오프라인 사용 준비 상태 */
+function updateOffline(){
+  var el=document.getElementById('offStatus'); if(!el)return;
+  var online=navigator.onLine;
+  var ready=('serviceWorker' in navigator)&&!!navigator.serviceWorker.controller;
+  if(ready) el.textContent='저장됨 ✅ 인터넷 없이 사용 가능'+(online?'':' · 현재 오프라인');
+  else el.textContent=online?'온라인에서 한 번 더 열면 오프라인 저장됩니다':'오프라인 — 저장 전이라 일부 안 보일 수 있어요';
 }
 
 /* ===== D-day ===== */
@@ -724,10 +778,22 @@ document.addEventListener('DOMContentLoaded',function(){
   memo.addEventListener('input',function(){save('sg-memo',memo.value);});
 
 
-  render(); setDday();
+  render(); setDday(); initActiveTab();
   /* 오프라인 캐시 (크루즈 등 인터넷 없는 곳 대비) — https 배포 시에만 작동 */
-  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }
+  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){}
+    if(navigator.serviceWorker.addEventListener) navigator.serviceWorker.addEventListener('controllerchange',updateOffline); }
+  updateOffline();
+  window.addEventListener('online',updateOffline);
+  window.addEventListener('offline',updateOffline);
   setInterval(highlightNow,60000);
+
+  /* '지금' 점프 버튼 */
+  var nb=document.getElementById('nowBtn');
+  if(nb)nb.addEventListener('click',function(){var t=nowTarget(getTodayDay());if(t)t.scrollIntoView({behavior:'smooth',block:t.tagName==='SECTION'?'start':'center'});});
+
+  /* 여행 기간이면 오늘 일정으로 자동 스크롤 */
+  var td=getTodayDay();
+  if(td!==null)setTimeout(function(){var t=nowTarget(td);if(t)t.scrollIntoView({behavior:'smooth',block:t.tagName==='SECTION'?'start':'center'});},350);
 
   /* 홈 화면에 추가 (PWA 설치) */
   var ibtn=document.getElementById('installBtn');

@@ -175,19 +175,6 @@
   .menud .mi{padding:7px 15px;}
   .menud .mi .men{font-size:13.5px;font-weight:700;}
   .menud .mi .mko{font-size:12.5px;color:var(--soft);margin-top:2px;line-height:1.45;}
-  .menu-note{font-size:11.5px;color:var(--muted);margin:6px 2px 12px;line-height:1.5;}
-
-  /* Show-this cards & prep checklist */
-  .bigtx{padding:6px 15px 16px;}
-  .bigtx .en{font-size:19px;font-weight:800;line-height:1.35;}
-  .bigtx .sub{font-size:14px;color:var(--muted);font-weight:600;margin-top:4px;}
-  .prep-row{display:flex;gap:11px;padding:12px 15px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;}
-  .prep-row:last-child{border-bottom:none;}
-  .prep-row span{font-size:13.5px;font-weight:600;flex:1;}
-  .prep-row.pdone span{text-decoration:line-through;opacity:.5;}
-  .pchk{appearance:none;-webkit-appearance:none;flex-shrink:0;width:24px;height:24px;border:2px solid var(--line);border-radius:8px;cursor:pointer;position:relative;background:var(--card);}
-  .pchk:checked{background:var(--brand);border-color:var(--brand);}
-  .pchk:checked::after{content:"✓";position:absolute;color:#fff;font-size:16px;font-weight:900;left:4px;top:-2px;}
 
   /* Generic blocks */
   .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 0;box-shadow:var(--shadow);overflow:hidden;}
@@ -259,14 +246,6 @@
       <textarea id="memo" placeholder="✍️ 예약번호·항공편·좌석·기타 메모를 적어두세요 (이 기기에 자동 저장, 오프라인 유지)"></textarea>
       <div class="hint">💾 입력 즉시 이 기기에 저장됩니다 (인터넷 불필요).</div>
     </div>
-  </section>
-
-  <section>
-    <h2 class="sec-title">🪪 보여주기 카드</h2>
-    <p class="menu-note">택시·수속 때 탭해서 크게 보여주세요.</p>
-    <details class="menud"><summary>🏨 호텔 (택시 기사용)</summary><div class="bigtx"><div class="en">Swissôtel The Stamford</div><div class="sub">2 Stamford Road, Singapore 178882 · City Hall MRT</div></div></details>
-    <details class="menud"><summary>🚢 크루즈센터 (6/8 탑승)</summary><div class="bigtx"><div class="en">Marina Bay Cruise Centre</div><div class="sub">61 Marina Coastal Drive, Singapore 018947</div></div></details>
-    <details class="menud"><summary>✈️ 공항 (6/11 귀국)</summary><div class="bigtx"><div class="en">Changi Airport Terminal 2</div><div class="sub">Singapore Airlines SQ606 · 14:55 출발</div></div></details>
   </section>
 </div>
 

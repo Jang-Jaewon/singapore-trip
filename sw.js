@@ -35,7 +35,10 @@ self.addEventListener('fetch', function (e) {
 
   var fromCache = function () {
     return caches.match(e.request).then(function (cached) {
-      return cached || (isNav ? caches.match('./index.html') : undefined);
+      if (cached) return cached;
+      // navigate 인데 정확 매치가 없으면 메인 페이지로 폴백(./index.html → ./)
+      if (isNav) return caches.match('./index.html').then(function (h) { return h || caches.match('./'); });
+      return undefined;
     });
   };
 

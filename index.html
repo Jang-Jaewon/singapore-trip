@@ -243,7 +243,6 @@
       <div class="e"><div class="ic">💱</div><div class="et"><b>통화</b><span>싱가포르 달러 (SGD, S$) · 카드 보편적 · 호커센터는 현금</span></div></div>
       <div class="e"><div class="ic">🍽️</div><div class="et"><b>팁 문화</b><span>팁 불필요 (식당 서비스차지 10% 포함)</span></div></div>
       <div class="e"><div class="ic">🚇</div><div class="et"><b>교통</b><span>MRT·버스는 일반 신용/체크카드 탭으로 탑승 · 보조로 Grab 앱</span></div></div>
-      <div class="e"><div class="ic">📡</div><div class="et"><b>오프라인</b><span id="offStatus">확인 중…</span></div></div>
       <div class="e"><div class="ic">🌧️</div><div class="et"><b>날씨 팁</b><span>30°C+ 무더위 · 실내 냉방 강함(가디건) · 스콜 대비 우산</span></div></div>
       <div class="e"><div class="ic">🚨</div><div class="et"><b>긴급 연락</b><span>경찰 <a href="tel:999">999</a> · 구급/소방 <a href="tel:995">995</a> · 한국대사관 <a href="tel:+6562561188">+65 6256 1188</a></span></div></div>
     </div>
@@ -505,12 +504,19 @@
 </div>
 
 <script>
+/* ───────────────────────────────────────────────────────────────
+ * 계층: DATA → UTIL → COMPONENTS → COMPOSE → INTERACTION → BOOTSTRAP
+ * 이 <script> 는 regenerate-days.js 가 스텁 실행해 cardHTML·daySectionHTML·
+ * DAYS·ITEMS·esc 를 추출, 정적 #days 블록을 재생성하는 단일 소스다.
+ * ─────────────────────────────────────────────────────────────── */
 /* 안드로이드 크롬: 설치 프롬프트 이벤트 캐치 (전역, 빠르게 등록) */
 var deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;
   var b=document.getElementById('installBtn'); if(b)b.style.display='block';});
 
-/* ===== 일정 데이터 (노션 2026-05-28 기준) ===== */
+/* ═══════════════════════════════════════════════════════════════
+ * DATA — 일정 데이터 (노션 2026-05-28 기준) · 진실의 단일 소스
+ * ═══════════════════════════════════════════════════════════════ */
 var DAYS=[
  {n:1,date:"2026-06-05",label:"6/5 (금)",theme:"🌏 문화권 & 로컬 탐방 — 포트캐닝 → 리틀인디아 → 아랍스트리트 → 차이나타운 → 라우파삿 → 클락키"},
  {n:2,date:"2026-06-06",label:"6/6 (토)",theme:"🌇 미래도시 & MBS — Cloud Forest → Flower Dome → MBS → 칠리크랩 → 야경쇼"},
@@ -589,7 +595,9 @@ var ITEMS=[
  {id:"g07",d:7,t:"14:55",em:"🛫",ti:"SQ606 출발 → 인천",pl:"Changi Airport",cat:"이동",ds:"22:20 인천(ICN) 도착",lk:[]}
 ];
 
-/* ===== 유틸 ===== */
+/* ═══════════════════════════════════════════════════════════════
+ * UTIL — 순수 헬퍼 (DOM 비의존)
+ * ═══════════════════════════════════════════════════════════════ */
 var NOPLACE={"도보":1,"MRT":1};
 function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function mapUrl(p){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p+" Singapore");}
@@ -608,50 +616,69 @@ function endMin(t){var m=/~\s*(\d{1,2}):(\d{2})/.exec(t);return m?(+m[1]*60+ +m[
 function load(k,def){try{var v=localStorage.getItem(k);return v===null?def:v;}catch(e){return def;}}
 function save(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 
-/* ===== 렌더 ===== */
-function render(){
-  var host=document.getElementById('days'); host.innerHTML='';
-  DAYS.forEach(function(day){
-    var sec=document.createElement('section');
-    sec.className='day d'+day.n; sec.id='day'+day.n;
-    var its=ITEMS.filter(function(i){return i.d===day.n;});
-    var cards=its.map(function(i,idx){return cardHTML(i,idx,its);}).join('');
-    sec.innerHTML='<div class="day-head"><span class="day-badge b'+day.n+'">'+day.n+'일차</span><h3>'+day.label+'</h3></div>'+
-      '<p class="day-theme">'+esc(day.theme)+'</p><div class="tl">'+cards+'</div>';
-    host.appendChild(sec);
-  });
-  bind();
-  refreshDone();
-  highlightNow();
+/* ═══════════════════════════════════════════════════════════════
+ * COMPONENTS — 렌더 빌더 (esc 처리된 HTML 문자열 반환, 순수 함수)
+ *   cardHTML / daySectionHTML 이 이들을 조합한다.
+ * ═══════════════════════════════════════════════════════════════ */
+/* 장소 칩 (📍 구글맵 링크). NOPLACE(도보/MRT)는 빈 문자열 */
+function placeChipHTML(place){
+  return NOPLACE[place]?'':'<a class="place" href="'+mapUrl(place)+'" target="_blank" rel="noopener">📍'+esc(place)+'</a>';
 }
+/* 이동 길찾기 버튼 (🗺️). 이동 카테고리 + 출발/도착 산출 가능할 때만 */
+function dirBtnHTML(i,idx,list){
+  if(i.cat!=="이동"||!list) return '';
+  var leg=legOf(list,idx);
+  if(!leg) return '';
+  return '<a class="dirbtn" href="'+dirUrl(leg.o,leg.d)+'" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">'+esc(leg.o)+' → '+esc(leg.d)+'</span><span class="dgo">길찾기 ↗</span></a>';
+}
+/* 참고자료 토글 버튼 + 링크 목록 (🔗). 링크 없으면 빈 문자열 */
+function refsHTML(i){
+  if(!i.lk||!i.lk.length) return '';
+  var links=i.lk.map(function(l){
+    var label=l.l?esc(l.l):'참고 링크';
+    return '<a class="reflink" href="'+esc(l.u)+'" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">'+label+'</span><span class="lgo">'+(l.dt?esc(l.dt)+' ':'')+'↗</span></a>';
+  }).join('');
+  return '<button class="reftoggle" data-toggle="'+i.id+'"><span class="arr">▶</span>참고 자료 '+i.lk.length+'</button>'+
+         '<div class="refs" id="refs-'+i.id+'">'+links+'</div>';
+}
+/* 세부설명 블록. 비어있으면 빈 문자열 */
+function descHTMLOf(i){
+  return i.ds?'<div class="desc">'+esc(i.ds)+'</div>':'';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * COMPOSE — cardHTML · daySectionHTML · render
+ *   daySectionHTML 은 HTML(render)와 regenerate-days.js 가 공유한다.
+ * ═══════════════════════════════════════════════════════════════ */
 function cardHTML(i,idx,list){
   var c=CAT[i.cat]||"#6b7280";
-  var place=i.pl;
-  var placeChip=NOPLACE[place]?'':'<a class="place" href="'+mapUrl(place)+'" target="_blank" rel="noopener">📍'+esc(place)+'</a>';
-  var dir='';
-  if(i.cat==="이동"&&list){
-    var leg=legOf(list,idx);
-    if(leg) dir='<a class="dirbtn" href="'+dirUrl(leg.o,leg.d)+'" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">'+esc(leg.o)+' → '+esc(leg.d)+'</span><span class="dgo">길찾기 ↗</span></a>';
-  }
-  var refs='';
-  if(i.lk&&i.lk.length){
-    var links=i.lk.map(function(l){
-      var label=l.l?esc(l.l):'참고 링크';
-      return '<a class="reflink" href="'+esc(l.u)+'" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">'+label+'</span><span class="lgo">'+(l.dt?esc(l.dt)+' ':'')+'↗</span></a>';
-    }).join('');
-    refs='<button class="reftoggle" data-toggle="'+i.id+'"><span class="arr">▶</span>참고 자료 '+i.lk.length+'</button>'+
-         '<div class="refs" id="refs-'+i.id+'">'+links+'</div>';
-  }
-  var descHTML=i.ds?'<div class="desc">'+esc(i.ds)+'</div>':'';
   return '<div class="item"><div class="card" id="card-'+i.id+'" data-start="'+(startMin(i.t)===null?'':startMin(i.t))+'" data-end="'+(endMin(i.t)===null?'':endMin(i.t))+'" data-day="'+i.d+'">'+
     '<div class="ctop"><span class="time">'+esc(i.t)+'</span><span class="nowtag" style="display:none">🔴 지금</span>'+
     '<span class="cat" style="color:'+c+';background:'+c+'22">'+esc(i.cat)+'</span></div>'+
     '<div class="crow"><input type="checkbox" class="chk" data-id="'+i.id+'" aria-label="완료">'+
-    '<div class="body"><div class="ttl"><span class="em">'+i.em+'</span><span class="ttl-tx">'+esc(i.ti)+'</span>'+placeChip+'</div>'+
-    descHTML+dir+refs+'</div></div></div></div>';
+    '<div class="body"><div class="ttl"><span class="em">'+i.em+'</span><span class="ttl-tx">'+esc(i.ti)+'</span>'+placeChipHTML(i.pl)+'</div>'+
+    descHTMLOf(i)+dirBtnHTML(i,idx,list)+refsHTML(i)+'</div></div></div></div>';
+}
+/* 하루치 day 섹션 전체. render(브라우저)와 regenerate-days.js(정적본)가 공유 → 바이트 동일 보장 */
+function daySectionHTML(day,items){
+  var cards=items.map(function(i,idx){return cardHTML(i,idx,items);}).join('');
+  return '<section class="day d'+day.n+'" id="day'+day.n+'"><div class="day-head">'+
+    '<span class="day-badge b'+day.n+'">'+day.n+'일차</span><h3>'+esc(day.label)+
+    '</h3></div><p class="day-theme">'+esc(day.theme)+'</p><div class="tl">'+cards+'</div></section>';
+}
+function render(){
+  var host=document.getElementById('days');
+  host.innerHTML=DAYS.map(function(day){
+    return daySectionHTML(day,ITEMS.filter(function(i){return i.d===day.n;}));
+  }).join('');
+  bind();
+  refreshDone();
+  highlightNow();
 }
 
-/* ===== 인터랙션 바인딩 ===== */
+/* ═══════════════════════════════════════════════════════════════
+ * INTERACTION — 바인딩 · 진행률 · 하이라이트 · 탭 · D-day · 테마
+ * ═══════════════════════════════════════════════════════════════ */
 function bind(){
   document.querySelectorAll('.reftoggle').forEach(function(b){
     b.addEventListener('click',function(){
@@ -735,15 +762,6 @@ function initActiveTab(){
   },{rootMargin:'-30% 0px -60% 0px',threshold:0});
   Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
 }
-/* 오프라인 사용 준비 상태 */
-function updateOffline(){
-  var el=document.getElementById('offStatus'); if(!el)return;
-  var online=navigator.onLine;
-  var ready=('serviceWorker' in navigator)&&!!navigator.serviceWorker.controller;
-  if(ready) el.textContent='저장됨 ✅ 인터넷 없이 사용 가능'+(online?'':' · 현재 오프라인');
-  else el.textContent=online?'온라인에서 한 번 더 열면 오프라인 저장됩니다':'오프라인 — 저장 전이라 일부 안 보일 수 있어요';
-}
-
 /* ===== D-day ===== */
 function setDday(){
   /* 출국 6/4 기준 카운트다운, 도착 6/5 = 여행 Day 1 */
@@ -762,6 +780,9 @@ var hideDone=load('sg-hideDone','0')==='1';
 /* ===== 다크모드 ===== */
 function applyTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';document.querySelector('meta[name=theme-color]').setAttribute('content',t==='dark'?'#101a4d':'#1b2a6b');}
 
+/* ═══════════════════════════════════════════════════════════════
+ * BOOTSTRAP — DOMContentLoaded 진입점 (렌더 + 이벤트 연결 + PWA)
+ * ═══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',function(){
   var saved=load('sg-theme','');
   if(!saved){saved=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}
@@ -780,11 +801,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   render(); setDday(); initActiveTab();
   /* 오프라인 캐시 (크루즈 등 인터넷 없는 곳 대비) — https 배포 시에만 작동 */
-  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){}
-    if(navigator.serviceWorker.addEventListener) navigator.serviceWorker.addEventListener('controllerchange',updateOffline); }
-  updateOffline();
-  window.addEventListener('online',updateOffline);
-  window.addEventListener('offline',updateOffline);
+  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }
   setInterval(highlightNow,60000);
 
   /* '지금' 점프 버튼 */

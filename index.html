@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="싱가포르">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%230f766e'/%3E%3Ctext x='90' y='118' font-size='96' text-anchor='middle'%3E%F0%9F%87%B8%F0%9F%87%AC%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22%EC%8B%B1%EA%B0%80%ED%8F%AC%EB%A5%B4%20%EC%97%AC%ED%96%89%22%2C%22short_name%22%3A%22%EC%8B%B1%EA%B0%80%ED%8F%AC%EB%A5%B4%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f4f7f6%22%2C%22theme_color%22%3A%22%230f766e%22%7D">
+<title>🇸🇬 싱가포르 여행</title>
+<style>
+  :root{
+    --bg:#f4f7f6; --card:#ffffff; --ink:#16302b; --muted:#6b7d78;
+    --line:#e4ebe8; --brand:#0f766e; --brand-2:#14b8a6;
+    --hero1:#1b2a6b; --hero2:#3b3f9e; --hero3:#6d4fc4;
+    --dash:#e4ebe8; --soft:#52635e; --chip:#ffffff;
+    --shadow:0 1px 2px rgba(16,48,43,.04);
+  }
+  [data-theme="dark"]{
+    --bg:#0e1413; --card:#172120; --ink:#e8efec; --muted:#8aa39c;
+    --line:#243230; --brand:#2dd4bf; --brand-2:#2dd4bf;
+    --hero1:#101a4d; --hero2:#26307e; --hero3:#4a3a96;
+    --dash:#2b3a37; --soft:#b5c4bf; --chip:#172120;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overscroll-behavior-y:none;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(env(safe-area-inset-bottom) + 48px);
+    transition:background .25s,color .25s;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px;}
+  a{color:inherit;}
+
+  /* Hero */
+  .hero{
+    background:
+      radial-gradient(1.5px 1.5px at 12% 28%, rgba(255,255,255,.9) 50%, transparent 51%),
+      radial-gradient(2px 2px at 26% 64%, rgba(255,224,130,.9) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 38% 18%, rgba(255,255,255,.7) 50%, transparent 51%),
+      radial-gradient(2.5px 2.5px at 55% 78%, rgba(255,255,255,.55) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 67% 30%, rgba(255,224,130,.85) 50%, transparent 51%),
+      radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,.8) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 90% 22%, rgba(255,255,255,.75) 50%, transparent 51%),
+      radial-gradient(2px 2px at 45% 45%, rgba(255,255,255,.5) 50%, transparent 51%),
+      linear-gradient(150deg,var(--hero1) 0%,var(--hero2) 55%,var(--hero3) 100%);
+    color:#fff; padding:calc(env(safe-area-inset-top) + 30px) 16px 28px;
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .hero::after{content:"✨";position:absolute;right:22px;top:calc(env(safe-area-inset-top) + 58px);font-size:22px;opacity:.95;filter:drop-shadow(0 0 6px rgba(255,224,130,.8));}
+  .hero::before{content:"";position:absolute;left:-50px;bottom:-70px;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle,rgba(255,224,130,.18) 0%,rgba(255,255,255,.05) 60%,transparent 70%);}
+  .flag{font-size:44px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15));}
+  .hero h1{margin:8px 0 4px;font-size:29px;font-weight:800;letter-spacing:-.5px;position:relative;}
+  .hero .dates{font-size:14.5px;opacity:.95;font-weight:600;position:relative;}
+  .hero .badges{margin-top:13px;display:flex;gap:8px;justify-content:center;position:relative;flex-wrap:wrap;}
+  .hpill{display:inline-block;padding:5px 13px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:13px;font-weight:700;backdrop-filter:blur(4px);}
+  .hpill.dday{background:linear-gradient(135deg,#ffe082,#ffc94d);color:#1b2a6b;border-color:rgba(255,255,255,.5);text-shadow:none;}
+  .theme-btn{position:absolute;top:calc(env(safe-area-inset-top) + 10px);right:14px;z-index:5;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;font-size:17px;cursor:pointer;backdrop-filter:blur(4px);}
+
+  section{margin-top:24px;}
+  .sec-title{font-size:18px;font-weight:800;margin:0 0 12px;display:flex;align-items:center;gap:7px;letter-spacing:-.3px;}
+
+  /* Key info */
+  .info-grid{display:grid;grid-template-columns:1fr;gap:9px;}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);}
+  .info .ic{font-size:21px;flex-shrink:0;width:24px;text-align:center;}
+  .info .tx b{display:block;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.2px;}
+  .info .tx span{font-size:14.5px;font-weight:600;}
+
+  /* Essentials */
+  .ess{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
+  .ess .e{display:flex;gap:11px;padding:12px 15px;border-bottom:1px solid var(--line);align-items:flex-start;}
+  .ess .e:last-child{border-bottom:none;}
+  .ess .e .ic{font-size:18px;width:22px;flex-shrink:0;text-align:center;}
+  .ess .e .et b{display:block;font-size:11px;color:var(--muted);font-weight:700;}
+  .ess .e .et span{font-size:14px;font-weight:600;}
+  .ess .e .et a{color:var(--brand);font-weight:700;text-decoration:none;}
+  .memo{margin-top:9px;}
+  .memo textarea{width:100%;border:1px dashed var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:11px 13px;font:inherit;font-size:13.5px;resize:vertical;min-height:64px;}
+  .memo .hint{font-size:11px;color:var(--muted);margin:5px 2px 0;}
+
+  /* Tabs */
+  .tabs{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);padding:10px 0;margin-top:24px;border-bottom:1px solid var(--line);}
+  .tabs-inner{display:flex;gap:8px;max-width:560px;margin:0 auto;padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .tabs-inner::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--chip);border:1px solid var(--line);padding:8px 14px;border-radius:11px;font-size:13px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:62px;}
+  .tab small{font-size:10px;font-weight:600;color:var(--muted);}
+  .tab.d1{border-top:3px solid #2563eb;} .tab.d2{border-top:3px solid #7c3aed;}
+  .tab.d3{border-top:3px solid #f97316;} .tab.d4{border-top:3px solid #dc2626;}
+  .tab.d5{border-top:3px solid #0ea5e9;} .tab.d6{border-top:3px solid #10b981;}
+  .tab.d7{border-top:3px solid #64748b;}
+  .tab.misc{border-top:3px solid #14b8a6;}
+
+  /* Toolbar */
+  .toolbar{display:flex;align-items:center;gap:10px;margin-top:18px;}
+  .toolbar .prog{flex:1;font-size:12.5px;color:var(--muted);font-weight:700;}
+  .toolbar .prog b{color:var(--brand);}
+  .switch{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;user-select:none;}
+  .switch input{width:0;height:0;opacity:0;position:absolute;}
+  .switch .track{width:38px;height:22px;border-radius:999px;background:var(--line);position:relative;transition:.2s;}
+  .switch .track::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2);}
+  .switch input:checked + .track{background:var(--brand);}
+  .switch input:checked + .track::after{transform:translateX(16px);}
+
+  /* Day */
+  .day{scroll-margin-top:78px;margin-top:24px;}
+  .day-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+  .day-badge{font-size:13px;font-weight:800;color:#fff;padding:3px 11px;border-radius:999px;}
+  .b1{background:#2563eb;} .b2{background:#7c3aed;} .b3{background:#f97316;} .b4{background:#dc2626;}
+  .b5{background:#0ea5e9;} .b6{background:#10b981;} .b7{background:#64748b;}
+  .day-head h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;}
+  .day-theme{font-size:12.5px;color:var(--muted);margin:0 0 14px;font-weight:600;}
+
+  /* Timeline */
+  .tl{position:relative;padding-left:18px;}
+  .tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--line);}
+  .item{position:relative;margin-bottom:11px;}
+  .item::before{content:"";position:absolute;left:-16px;top:18px;width:9px;height:9px;border-radius:50%;background:var(--brand-2);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--line);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);transition:border-color .2s,opacity .2s;}
+  .card.now{border-color:var(--brand);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 35%,transparent);}
+  .card.done{opacity:.5;}
+  .card.done .ttl-tx{text-decoration:line-through;}
+  .ctop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .time{font-size:12px;font-weight:800;color:var(--brand);letter-spacing:.2px;font-variant-numeric:tabular-nums;}
+  .nowtag{font-size:10px;font-weight:800;color:#fff;background:#ef4444;padding:2px 7px;border-radius:999px;}
+  .cat{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.2px;}
+  .crow{display:flex;align-items:flex-start;gap:10px;margin-top:6px;}
+  .chk{appearance:none;-webkit-appearance:none;flex-shrink:0;width:24px;height:24px;border:2px solid var(--line);border-radius:8px;cursor:pointer;margin:1px 0 0;position:relative;background:var(--card);}
+  .chk:checked{background:var(--brand);border-color:var(--brand);}
+  .chk:checked::after{content:"✓";position:absolute;color:#fff;font-size:16px;font-weight:900;left:4px;top:-2px;}
+  .body{flex:1;min-width:0;}
+  .ttl{font-size:15.5px;font-weight:700;display:flex;gap:6px;align-items:center;flex-wrap:wrap;letter-spacing:-.2px;}
+  .ttl .em{font-size:17px;flex-shrink:0;}
+  .place{font-size:11.5px;color:var(--muted);font-weight:600;text-decoration:none;white-space:nowrap;}
+  .desc{font-size:12.5px;color:var(--soft);margin-top:7px;padding-top:7px;border-top:1px dashed var(--dash);line-height:1.5;}
+  .dirbtn{margin-top:9px;display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 13px;text-decoration:none;background:color-mix(in srgb,var(--brand) 10%,transparent);border:1px solid color-mix(in srgb,var(--brand) 30%,transparent);border-radius:10px;font-size:13px;font-weight:700;color:var(--brand);}
+  .dirbtn .dic{font-size:16px;}
+  .dirbtn .dtx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dirbtn .dgo{font-size:11px;font-weight:800;opacity:.7;}
+  .reftoggle{margin-top:9px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);border:none;padding:6px 11px;border-radius:9px;cursor:pointer;}
+  .reftoggle .arr{transition:transform .2s;}
+  .reftoggle.open .arr{transform:rotate(90deg);}
+  .refs{margin-top:9px;display:none;flex-direction:column;gap:7px;}
+  .refs.open{display:flex;}
+  .reflink{display:flex;align-items:center;gap:9px;padding:11px 12px;min-height:44px;background:var(--bg);border:1px solid var(--line);border-radius:10px;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--ink);}
+  .reflink .lic{font-size:14px;}
+  .reflink .ltx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .reflink .lgo{font-size:11px;color:var(--muted);}
+
+  /* Cruise menu */
+  .menud{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;}
+  .menud summary{padding:13px 15px;font-weight:800;font-size:14.5px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;}
+  .menud summary::-webkit-details-marker{display:none;}
+  .menud summary::after{content:"▾";margin-left:auto;color:var(--muted);transition:transform .2s;}
+  .menud[open] summary::after{transform:rotate(180deg);}
+  .menud .msec{padding:9px 15px 3px;font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.5px;border-top:1px dashed var(--dash);}
+  .menud .mi{padding:7px 15px;}
+  .menud .mi .men{font-size:13.5px;font-weight:700;}
+  .menud .mi .mko{font-size:12.5px;color:var(--soft);margin-top:2px;line-height:1.45;}
+  .menu-note{font-size:11.5px;color:var(--muted);margin:6px 2px 12px;line-height:1.5;}
+
+  /* Show-this cards & prep checklist */
+  .bigtx{padding:6px 15px 16px;}
+  .bigtx .en{font-size:19px;font-weight:800;line-height:1.35;}
+  .bigtx .sub{font-size:14px;color:var(--muted);font-weight:600;margin-top:4px;}
+  .prep-row{display:flex;gap:11px;padding:12px 15px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;}
+  .prep-row:last-child{border-bottom:none;}
+  .prep-row span{font-size:13.5px;font-weight:600;flex:1;}
+  .prep-row.pdone span{text-decoration:line-through;opacity:.5;}
+  .pchk{appearance:none;-webkit-appearance:none;flex-shrink:0;width:24px;height:24px;border:2px solid var(--line);border-radius:8px;cursor:pointer;position:relative;background:var(--card);}
+  .pchk:checked{background:var(--brand);border-color:var(--brand);}
+  .pchk:checked::after{content:"✓";position:absolute;color:#fff;font-size:16px;font-weight:900;left:4px;top:-2px;}
+
+  /* Generic blocks */
+  .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 0;box-shadow:var(--shadow);overflow:hidden;}
+  .row{padding:13px 15px;border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:none;}
+  .row .rh{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14.5px;}
+  .row .rb{font-size:13px;color:var(--soft);margin-top:6px;line-height:1.55;}
+  .row .rb b{color:var(--ink);}
+  .meta{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;}
+  .meta span{font-size:11.5px;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:4px;}
+
+  .foot{text-align:center;color:var(--muted);font-size:11.5px;margin-top:34px;line-height:1.6;}
+  .install-btn{display:block;width:100%;margin:16px 0 0;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--hero1),var(--hero3));color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(27,42,107,.3);letter-spacing:-.2px;}
+  .imodal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.5);display:none;align-items:flex-end;}
+  .imodal.open{display:flex;}
+  .imodal .sheet{background:var(--card);color:var(--ink);width:100%;max-width:560px;margin:0 auto;border-radius:18px 18px 0 0;padding:22px 20px calc(env(safe-area-inset-bottom) + 24px);}
+  .imodal h3{margin:0 0 14px;font-size:17px;font-weight:800;}
+  .imodal ol{margin:0;padding-left:22px;font-size:14.5px;line-height:1.85;}
+  .imodal ol b{color:var(--brand);}
+  .imodal .ihint{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.5;}
+  .imodal .close{margin-top:18px;width:100%;padding:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;}
+  .top-btn{position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);z-index:40;width:44px;height:44px;border-radius:50%;border:none;background:var(--brand);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 14px rgba(15,118,110,.4);opacity:0;pointer-events:none;transition:opacity .25s;}
+  .top-btn.show{opacity:1;pointer-events:auto;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <button class="theme-btn" id="themeBtn" aria-label="테마 전환">🌙</button>
+  <div class="flag">🇸🇬</div>
+  <h1>싱가포르 여행</h1>
+  <div class="dates">2026.06.04 (목) 출국 ~ 06.11 (목) 귀국</div>
+  <div class="badges">
+    <span class="hpill dday" id="dday">D-?</span>
+    <span class="hpill">싱가포르 3박 + 크루즈 3박 · 허니문 🍯</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <button id="installBtn" class="install-btn" style="display:none">📲 홈 화면에 앱으로 추가하기</button>
+
+  <section>
+    <h2 class="sec-title">🧳 여행 핵심 정보</h2>
+    <div class="info-grid">
+      <div class="info"><div class="ic">✈️</div><div class="tx"><b>출국</b><span>SQ605 (A350-900) · 6/4(목) 23:50 인천 T1 → 6/5(금) 05:00 창이</span></div></div>
+      <div class="info"><div class="ic">🛬</div><div class="tx"><b>귀국</b><span>SQ606 (A350-900) · 6/11(목) 14:55 창이 T2 → 22:20 인천 T1</span></div></div>
+      <div class="info"><div class="ic">🏨</div><div class="tx"><b>숙소</b><span>Swissôtel The Stamford</span></div></div>
+      <div class="info"><div class="ic">🎫</div><div class="tx"><b>보유 티켓</b><span>가든스바이더베이 (플라워돔·클라우드포레스트) · 만다이 (동물원·리버원더스·아마존보트)</span></div></div>
+      <div class="info"><div class="ic">🌃</div><div class="tx"><b>SKAI 디너</b><span>6/7(일) 18:00 · 예약 완료</span></div></div>
+      <div class="info"><div class="ic">🛳️</div><div class="tx"><b>크루즈</b><span>Disney Adventure · 6/8(월) 탑승</span></div></div>
+      <div class="info"><div class="ic">💳</div><div class="tx"><b>멤버십</b><span>ALL Accor+ Explorer 사용 예정</span></div></div>
+    </div>
+  </section>
+
+  <!-- 상비 정보 -->
+  <section>
+    <h2 class="sec-title">📋 여행 상비 정보</h2>
+    <div class="ess">
+      <div class="e"><div class="ic">🏨</div><div class="et"><b>호텔 주소</b><span>Swissôtel The Stamford · 2 Stamford Rd, Singapore 178882</span></div></div>
+      <div class="e"><div class="ic">🔌</div><div class="et"><b>전원 / 플러그</b><span>Type G (영국식 3핀) · 230V / 50Hz · 멀티어댑터 필수</span></div></div>
+      <div class="e"><div class="ic">💱</div><div class="et"><b>통화</b><span>싱가포르 달러 (SGD, S$) · 카드 보편적 · 호커센터는 현금</span></div></div>
+      <div class="e"><div class="ic">🍽️</div><div class="et"><b>팁 문화</b><span>팁 불필요 (식당 서비스차지 10% 포함)</span></div></div>
+      <div class="e"><div class="ic">🚇</div><div class="et"><b>교통</b><span>MRT·버스는 일반 신용/체크카드 탭으로 탑승 · 보조로 Grab 앱</span></div></div>
+      <div class="e"><div class="ic">🌧️</div><div class="et"><b>날씨 팁</b><span>30°C+ 무더위 · 실내 냉방 강함(가디건) · 스콜 대비 우산</span></div></div>
+      <div class="e"><div class="ic">🚨</div><div class="et"><b>긴급 연락</b><span>경찰 <a href="tel:999">999</a> · 구급/소방 <a href="tel:995">995</a> · 한국대사관 <a href="tel:+6562561188">+65 6256 1188</a></span></div></div>
+    </div>
+    <div class="memo">
+      <textarea id="memo" placeholder="✍️ 예약번호·항공편·좌석·기타 메모를 적어두세요 (이 기기에 자동 저장, 오프라인 유지)"></textarea>
+      <div class="hint">💾 입력 즉시 이 기기에 저장됩니다 (인터넷 불필요).</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">🪪 보여주기 카드</h2>
+    <p class="menu-note">택시·수속 때 탭해서 크게 보여주세요.</p>
+    <details class="menud"><summary>🏨 호텔 (택시 기사용)</summary><div class="bigtx"><div class="en">Swissôtel The Stamford</div><div class="sub">2 Stamford Road, Singapore 178882 · City Hall MRT</div></div></details>
+    <details class="menud"><summary>🚢 크루즈센터 (6/8 탑승)</summary><div class="bigtx"><div class="en">Marina Bay Cruise Centre</div><div class="sub">61 Marina Coastal Drive, Singapore 018947</div></div></details>
+    <details class="menud"><summary>✈️ 공항 (6/11 귀국)</summary><div class="bigtx"><div class="en">Changi Airport Terminal 2</div><div class="sub">Singapore Airlines SQ606 · 14:55 출발</div></div></details>
+  </section>
+</div>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <a class="tab d1" href="#day1">1일차<small>6/5 금</small></a>
+    <a class="tab d2" href="#day2">2일차<small>6/6 토</small></a>
+    <a class="tab d3" href="#day3">3일차<small>6/7 일</small></a>
+    <a class="tab d4" href="#day4">4일차<small>6/8 월</small></a>
+    <a class="tab d5" href="#day5">5일차<small>6/9 화</small></a>
+    <a class="tab d6" href="#day6">6일차<small>6/10 수</small></a>
+    <a class="tab d7" href="#day7">7일차<small>6/11 목</small></a>
+    <a class="tab misc" href="#overview">한눈에<small>요약</small></a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="toolbar">
+    <div class="prog" id="prog">진행 <b>0</b> / 56</div>
+    <label class="switch"><input type="checkbox" id="hideDone"><span class="track"></span>완료 숨기기</label>
+  </div>
+
+  <!-- 일정은 JS로 렌더 -->
+  <div id="days">
+<section class="day d1" id="day1"><div class="day-head"><span class="day-badge b1">1일차</span><h3>6/5 (금)</h3></div><p class="day-theme">🌏 문화권 &amp; 로컬 탐방 — 포트캐닝 → 아랍스트리트 → 차이나타운 → 리틀인디아 → 라우파삿 → 클락키</p><div class="tl"><div class="item"><div class="card" id="card-a01" data-start="300" data-end="360" data-day="1"><div class="ctop"><span class="time">05:00~06:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">✈️</span><span class="ttl-tx">싱가포르 도착 &amp; 입국</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Changi%20Airport%20Singapore" target="_blank" rel="noopener">📍Changi Airport</a></div><div class="desc">SQ605 · SG Arrival Card 사전 제출 필수</div><button class="reftoggle" data-toggle="a01"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a01"><a class="reflink" href="https://blog.naver.com/jiyun0_0-/224297047200" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">SG 입국신고서 5분 작성법(MYICA 앱)</span><span class="lgo">26.05.26 ↗</span></a><a class="reflink" href="https://blog.naver.com/ssssss8201/224301360399" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">SG Arrival Card 작성+입국 꿀팁</span><span class="lgo">26.05.31 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a02" data-start="360" data-end="400" data-day="1"><div class="ctop"><span class="time">06:00~06:40</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a02" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚇</span><span class="ttl-tx">호텔 이동</span></div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Changi%20Airport%20Singapore&destination=Swiss%C3%B4tel%20The%20Stamford%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Changi Airport → Swissôtel The Stamford</span><span class="dgo">길찾기 ↗</span></a><button class="reftoggle" data-toggle="a02"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a02"><a class="reflink" href="https://blog.naver.com/sg__merli/224298043507" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">창이공항→시내 4가지 방법 총정리</span><span class="lgo">26.05.29 ↗</span></a><a class="reflink" href="https://blog.naver.com/herimaru/224298235994" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">공항→시내 MRT 탑승 실후기</span><span class="lgo">26.05.27 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a03" data-start="400" data-end="420" data-day="1"><div class="ctop"><span class="time">06:40~07:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a03" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🧳</span><span class="ttl-tx">Swissôtel 짐 맡기기</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div><button class="reftoggle" data-toggle="a03"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a03"><a class="reflink" href="https://blog.naver.com/perfectround/224300910944" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스위소텔 스위트 업그레이드 후기</span><span class="lgo">26.05.30 ↗</span></a><a class="reflink" href="https://blog.naver.com/daily_hyunny/224295348149" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스위소텔 마리나베이 룸 리뷰</span><span class="lgo">26.05.19 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a04" data-start="420" data-end="480" data-day="1"><div class="ctop"><span class="time">07:00~08:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a04" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌳</span><span class="ttl-tx">Fort Canning Park 산책</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Fort%20Canning%20Park%20Singapore" target="_blank" rel="noopener">📍Fort Canning Park</a></div><div class="desc">트리터널 / 공원 산책 / 아침 사진</div><button class="reftoggle" data-toggle="a04"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a04"><a class="reflink" href="https://blog.naver.com/ssos_2/224301204599" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">포트캐닝 트리터널 방문기</span><span class="lgo">26.05.30 ↗</span></a><a class="reflink" href="https://blog.naver.com/yoony0716/224299421497" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">포트캐닝 트리공원 DAY1 후기</span><span class="lgo">26.05.28 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a05" data-start="480" data-end="540" data-day="1"><div class="ctop"><span class="time">08:00~09:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a05" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🥐</span><span class="ttl-tx">Tiong Bahru Bakery Safari</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Tiong%20Bahru%20Bakery%20Singapore" target="_blank" rel="noopener">📍Tiong Bahru Bakery</a></div><div class="desc">매일 8:00 오픈 · 🍴 크루아상·쿠인아망 + 플랫화이트</div><button class="reftoggle" data-toggle="a05"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a05"><a class="reflink" href="https://blog.naver.com/milo_bahama/224290639401" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">티옹바루 베이커리 후기</span><span class="lgo">26.05.26 ↗</span></a><a class="reflink" href="https://blog.naver.com/summerwwavve/224298102163" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">티옹바루 베이커리 포함 여행기</span><span class="lgo">26.05.27 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a06" data-start="540" data-end="560" data-day="1"><div class="ctop"><span class="time">09:00~09:20</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a06" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚇</span><span class="ttl-tx">리틀인디아 이동</span></div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Tiong%20Bahru%20Bakery%20Singapore&destination=Little%20India%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Tiong Bahru Bakery → Little India</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-a07" data-start="560" data-end="640" data-day="1"><div class="ctop"><span class="time">09:20~10:40</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a07" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🪔</span><span class="ttl-tx">리틀인디아</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Little%20India%20Singapore" target="_blank" rel="noopener">📍Little India</a></div><div class="desc">Sri Veeramakaliamman Temple / Tekka Centre / Mustafa Centre / MINISO</div><button class="reftoggle" data-toggle="a07"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-a07"><a class="reflink" href="https://blog.naver.com/libbyroad/224298414493" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">무스타파센터 기념품 쇼핑 후기</span><span class="lgo">26.05.27 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a08" data-start="640" data-end="660" data-day="1"><div class="ctop"><span class="time">10:40~11:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a08" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚶</span><span class="ttl-tx">아랍스트리트 이동</span></div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Little%20India%20Singapore&destination=Arab%20Street%20%2F%20Haji%20Lane%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Little India → Arab Street / Haji Lane</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-a09" data-start="660" data-end="780" data-day="1"><div class="ctop"><span class="time">11:00~13:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a09" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🕌</span><span class="ttl-tx">아랍스트리트 &amp; 하지레인</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Arab%20Street%20%2F%20Haji%20Lane%20Singapore" target="_blank" rel="noopener">📍Arab Street / Haji Lane</a></div><div class="desc">Sultan Mosque / Haji Lane / 감성샵 &amp; 벽화거리 · 🍴 잠잠: 치킨 무르타박 / 블랑코: 점보 프론미(새우국수)</div><button class="reftoggle" data-toggle="a09"><span class="arr">▶</span>참고 자료 3</button><div class="refs" id="refs-a09"><a class="reflink" href="https://blog.naver.com/mozziandsunbi/224302688604" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">하지레인·술탄모스크·새우국수 후기</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/ovozzovo_/224293176971" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">잠잠 추천 메뉴·결제 후기</span><span class="lgo">26.05.19 ↗</span></a><a class="reflink" href="https://blog.naver.com/ovozzovo_/224286303701" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">새우국수 비교(블랑코코트)</span><span class="lgo">26.05.12 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a10" data-start="780" data-end="840" data-day="1"><div class="ctop"><span class="time">13:00~14:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#db2777;background:#db277722">쇼핑</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a10" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛍️</span><span class="ttl-tx">Bugis</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Bugis%20Singapore" target="_blank" rel="noopener">📍Bugis</a></div><div class="desc">Bugis Junction / Bugis Street</div><button class="reftoggle" data-toggle="a10"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a10"><a class="reflink" href="https://blog.naver.com/mary_zip/224301779392" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">부기스 기념품(해피히포·쿠키뮤지엄)</span><span class="lgo">26.05.31 ↗</span></a><a class="reflink" href="https://blog.naver.com/silver-_-ji/224302556388" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">차이나타운·부기스 혼여행기</span><span class="lgo">26.06.01 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a11" data-start="840" data-end="870" data-day="1"><div class="ctop"><span class="time">14:00~14:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a11" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚇</span><span class="ttl-tx">차이나타운 이동</span></div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Bugis%20Singapore&destination=Maxwell%20Food%20Centre%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Bugis → Maxwell Food Centre</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-a12" data-start="870" data-end="960" data-day="1"><div class="ctop"><span class="time">14:30~16:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a12" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍜</span><span class="ttl-tx">맥스웰 푸드 센터</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Maxwell%20Food%20Centre%20Singapore" target="_blank" rel="noopener">📍Maxwell Food Centre</a></div><div class="desc">🍴 티안티안 치킨라이스 (10:00~20:00, 월 휴무 — 금요일 OK) + 보리차 · 현금 추천</div><button class="reftoggle" data-toggle="a12"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a12"><a class="reflink" href="https://blog.naver.com/delii_/224302167080" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">맥스웰·티안티안 치킨라이스 후기</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/juyou0202/224297190508" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">맥스웰·불아사 방문 후기</span><span class="lgo">26.05.26 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a13" data-start="960" data-end="1080" data-day="1"><div class="ctop"><span class="time">16:00~18:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a13" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏮</span><span class="ttl-tx">차이나타운 관광</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Chinatown%20Singapore" target="_blank" rel="noopener">📍Chinatown</a></div><div class="desc">Buddha Tooth Relic Temple (불아사) / Chinatown Street / 기념품샵</div><button class="reftoggle" data-toggle="a13"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-a13"><a class="reflink" href="https://blog.naver.com/leejin_4u/224301793614" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">차이나타운 기념품 가격비교 가이드</span><span class="lgo">26.05.31 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a14" data-start="1080" data-end="1140" data-day="1"><div class="ctop"><span class="time">18:00~19:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#a06a3c;background:#a06a3c22">휴식</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a14" aria-label="완료"><div class="body"><div class="ttl"><span class="em">💆</span><span class="ttl-tx">차이나타운 마사지</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Lanxi%20Pavilion%20Health%20Center%20Singapore" target="_blank" rel="noopener">📍Lanxi Pavilion Health Center</a></div><div class="desc">1순위: Lanxi Pavilion Health Center (구글맵 예약 가능) / 대안: Crown Foot Reflexology</div><button class="reftoggle" data-toggle="a14"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a14"><a class="reflink" href="https://blog.naver.com/jyoon8892/224125690639" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">Lanxi Pavilion 실방문 후기</span><span class="lgo">25.12.30 ↗</span></a><a class="reflink" href="https://blog.naver.com/kjw9194/224218112151" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">(대안) Crown Foot 가성비 마사지</span><span class="lgo">26.03.16 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a15" data-start="1140" data-end="1230" data-day="1"><div class="ctop"><span class="time">19:00~20:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a15" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍢</span><span class="ttl-tx">Lau Pa Sat 저녁</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Lau%20Pa%20Sat%20Singapore" target="_blank" rel="noopener">📍Lau Pa Sat</a></div><div class="desc">Satay Street (저녁부터 도로 개방) · 🍴 치킨·새우 사테 모둠 + 타이거 맥주 · 현금 편함</div><button class="reftoggle" data-toggle="a15"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a15"><a class="reflink" href="https://blog.naver.com/trip_healing/224302585291" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">라우파삿 사테거리 후기</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/hana_11-/224288831721" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">라우파삿 사테 후기</span><span class="lgo">26.05.12 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a16" data-start="1230" data-end="1290" data-day="1"><div class="ctop"><span class="time">20:30~21:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a16" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌃</span><span class="ttl-tx">클락키 산책</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Clarke%20Quay%20Singapore" target="_blank" rel="noopener">📍Clarke Quay</a></div><div class="desc">싱가포르 리버 / 야경</div><button class="reftoggle" data-toggle="a16"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-a16"><a class="reflink" href="https://blog.naver.com/leejin_4u/224303221393" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">클락키 야경+BBQ 코스 후기</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/mnj_bds/224301143704" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">리버크루즈·야경 명소 코스</span><span class="lgo">26.05.31 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-a17" data-start="1290" data-end="1320" data-day="1"><div class="ctop"><span class="time">21:30~22:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#a06a3c;background:#a06a3c22">휴식</span></div><div class="crow"><input type="checkbox" class="chk" data-id="a17" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏨</span><span class="ttl-tx">호텔 복귀</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div></div></div></div></div></div></section><section class="day d2" id="day2"><div class="day-head"><span class="day-badge b2">2일차</span><h3>6/6 (토)</h3></div><p class="day-theme">🌇 미래도시 &amp; MBS — Cloud Forest → Flower Dome → MBS → 칠리크랩 → 야경쇼</p><div class="tl"><div class="item"><div class="card" id="card-b01" data-start="540" data-end="570" data-day="2"><div class="ctop"><span class="time">09:00~09:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍔</span><span class="ttl-tx">싱가포르 맥모닝</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=McDonald's%20Singapore" target="_blank" rel="noopener">📍McDonald's</a></div><div class="desc">🍴 한국에 없는 현지 한정 메뉴 노리기 (시즌 파이·로컬 버거)</div><button class="reftoggle" data-toggle="b01"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-b01"><a class="reflink" href="https://blog.naver.com/green_aunt/224293196694" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">싱가포르 맥도날드 신메뉴 후기</span><span class="lgo">26.05.19 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b02" data-start="540" data-end="600" data-day="2"><div class="ctop"><span class="time">09:00~10:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b02" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">Gardens by the Bay 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Gardens%20by%20the%20Bay%20Singapore" target="_blank" rel="noopener">📍Gardens by the Bay</a></div><div class="desc">대중교통 이동</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=McDonald's%20Singapore&destination=Gardens%20by%20the%20Bay%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">McDonald's → Gardens by the Bay</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-b03" data-start="600" data-end="660" data-day="2"><div class="ctop"><span class="time">10:00~11:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b03" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌸</span><span class="ttl-tx">Flower Dome</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Gardens%20by%20the%20Bay%20Singapore" target="_blank" rel="noopener">📍Gardens by the Bay</a></div><div class="desc">세계 식물관</div><button class="reftoggle" data-toggle="b03"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b03"><a class="reflink" href="https://blog.naver.com/daun1217/224302177614" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">입장권 예약+플라워돔 솔직후기</span><span class="lgo">26.06.02 ↗</span></a><a class="reflink" href="https://blog.naver.com/f9818/224302781674" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">플라워돔+클라우드포레스트 후기</span><span class="lgo">26.06.01 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b04" data-start="660" data-end="750" data-day="2"><div class="ctop"><span class="time">11:00~12:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b04" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌿</span><span class="ttl-tx">Cloud Forest</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Gardens%20by%20the%20Bay%20Singapore" target="_blank" rel="noopener">📍Gardens by the Bay</a></div><div class="desc">실내 폭포 / 미래도시 분위기</div><button class="reftoggle" data-toggle="b04"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b04"><a class="reflink" href="https://blog.naver.com/dlrhdms711/224303441197" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">3주살이가 알려주는 클라우드포레스트</span><span class="lgo">26.06.02 ↗</span></a><a class="reflink" href="https://blog.naver.com/naemonamoo-/224301710551" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">가든스 후기(쥬라기·클라우드)</span><span class="lgo">26.05.31 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b05" data-start="750" data-end="810" data-day="2"><div class="ctop"><span class="time">12:30~13:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b05" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍜</span><span class="ttl-tx">Song Fa Bak Kut Teh 점심</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Song%20Fa%20Bak%20Kut%20Teh%20Singapore" target="_blank" rel="noopener">📍Song Fa Bak Kut Teh</a></div><div class="desc">🍴 폭립 바쿠테 + 유타오(꽈배기 튀김) · 국물 무한 리필</div><button class="reftoggle" data-toggle="b05"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b05"><a class="reflink" href="https://blog.naver.com/hyoding_/224301612426" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">송파바쿠테 웨이팅 꿀팁</span><span class="lgo">26.05.31 ↗</span></a><a class="reflink" href="https://blog.naver.com/loeyb___/224302885554" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">송파바쿠테 방문기</span><span class="lgo">26.06.01 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b06" data-start="810" data-end="1050" data-day="2"><div class="ctop"><span class="time">13:30~17:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b06" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏨</span><span class="ttl-tx">MBS DAY</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20Sands%20Singapore" target="_blank" rel="noopener">📍Marina Bay Sands</a></div><div class="desc">Bacha Coffee / Apple Store / MBS 쇼핑 / Sampan Ride / SkyPark Observation Deck / Helix Bridge 산책</div><button class="reftoggle" data-toggle="b06"><span class="arr">▶</span>참고 자료 3</button><div class="refs" id="refs-b06"><a class="reflink" href="https://blog.naver.com/leejin_4u/224294637726" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">샌즈 라이프스타일 혜택 총정리</span><span class="lgo">26.05.19 ↗</span></a><a class="reflink" href="https://blog.naver.com/libbyroad/224296235654" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">삼판보트·레인오큘러스 무료 꿀팁</span><span class="lgo">26.05.26 ↗</span></a><a class="reflink" href="https://blog.naver.com/young5606/224300912030" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스카이파크 전망대 할인법</span><span class="lgo">26.05.30 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b07" data-start="1050" data-end="1170" data-day="2"><div class="ctop"><span class="time">17:30~19:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b07" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🦀</span><span class="ttl-tx">마칸수트라 글루턴스 베이</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Makansutra%20Gluttons%20Bay%20Singapore" target="_blank" rel="noopener">📍Makansutra Gluttons Bay</a></div><div class="desc">토요일 17:00 오픈 (검증: 26.06) · 🍴 칠리크랩 + 튀긴 번(만터우) + 시리얼새우 · 주문 전 시세 확인</div><button class="reftoggle" data-toggle="b07"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b07"><a class="reflink" href="https://blog.naver.com/hosooksoo_eo/224281991261" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">글루턴스베이 솔직후기(카드결제)</span><span class="lgo">26.05.05 ↗</span></a><a class="reflink" href="https://blog.naver.com/yeonju0508/224188701111" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">글루턴스베이 호커센터 추천</span><span class="lgo">26.02.19 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b08" data-start="1170" data-end="1200" data-day="2"><div class="ctop"><span class="time">19:30~20:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b08" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌇</span><span class="ttl-tx">Marina Bay 야경 산책</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20Singapore" target="_blank" rel="noopener">📍Marina Bay</a></div><div class="desc">워터프론트 / 야경 사진</div><button class="reftoggle" data-toggle="b08"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-b08"><a class="reflink" href="https://blog.naver.com/justice7215/224292788338" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">머라이언·마리나베이 산책 후기</span><span class="lgo">26.05.26 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b09" data-start="1200" data-end="1215" data-day="2"><div class="ctop"><span class="time">20:00~20:15</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b09" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🎆</span><span class="ttl-tx">Spectra 레이저쇼</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20(MBS%20%EC%95%9E)%20Singapore" target="_blank" rel="noopener">📍Marina Bay (MBS 앞)</a></div><div class="desc">토요일 쇼타임 20:00 / 21:00 / 22:00 · 15분 · 무료 · Event Plaza (15분 전 자리잡기) — 검증: 26.06</div><button class="reftoggle" data-toggle="b09"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b09"><a class="reflink" href="https://blog.naver.com/shalomgoon1/224291796478" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">야경·레이저쇼 시간 총정리</span><span class="lgo">26.05.31 ↗</span></a><a class="reflink" href="https://blog.naver.com/ssos_2/224301244105" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스펙트라 분수쇼 직관 후기</span><span class="lgo">26.05.30 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b10" data-start="1215" data-end="1230" data-day="2"><div class="ctop"><span class="time">20:15~20:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b10" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚶</span><span class="ttl-tx">Gardens by the Bay 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Gardens%20by%20the%20Bay%20Singapore" target="_blank" rel="noopener">📍Gardens by the Bay</a></div><div class="desc">도보 이동</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Marina%20Bay%20(MBS%20%EC%95%9E)%20Singapore&destination=Gardens%20by%20the%20Bay%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Marina Bay (MBS 앞) → Gardens by the Bay</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-b11" data-start="1245" data-end="1260" data-day="2"><div class="ctop"><span class="time">20:45~21:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b11" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌳</span><span class="ttl-tx">Garden Rhapsody 슈퍼트리쇼</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Gardens%20by%20the%20Bay%20Singapore" target="_blank" rel="noopener">📍Gardens by the Bay</a></div><div class="desc">쇼타임 매일 19:45 / 20:45 · 15분 · 무료 — 검증: 26.06 · 바닥에 누워서 보면 최고</div><button class="reftoggle" data-toggle="b11"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-b11"><a class="reflink" href="https://blog.naver.com/yje5684/224300977552" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">슈퍼트리쇼 시간·명당·포토존</span><span class="lgo">26.05.30 ↗</span></a><a class="reflink" href="https://blog.naver.com/ss06748/224300453048" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">슈퍼트리쇼 가는법·꿀팁</span><span class="lgo">26.05.29 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-b12" data-start="1260" data-end="" data-day="2"><div class="ctop"><span class="time">21:00 이후</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="b12" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">호텔 복귀</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div><div class="desc">대중교통 이동</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Gardens%20by%20the%20Bay%20Singapore&destination=Swiss%C3%B4tel%20The%20Stamford%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Gardens by the Bay → Swissôtel The Stamford</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div></div></section><section class="day d3" id="day3"><div class="day-head"><span class="day-badge b3">3일차</span><h3>6/7 (일)</h3></div><p class="day-theme">🦁 자연/액티비티 + 쇼핑 + SKAI — 만다이 동물원 → 리버 원더스 → SKAI 디너</p><div class="tl"><div class="item"><div class="card" id="card-c01" data-start="480" data-end="540" data-day="3"><div class="ctop"><span class="time">08:00~09:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍳</span><span class="ttl-tx">호텔 조식</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div><div class="desc">호텔 조식 여유롭게 즐기기</div><button class="reftoggle" data-toggle="c01"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c01"><a class="reflink" href="https://blog.naver.com/daily_hyunny/224295348788" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">아시안카페 조식 뷔페 리뷰</span><span class="lgo">26.05.19 ↗</span></a><a class="reflink" href="https://blog.naver.com/jhggyu21/224299478002" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스위소텔 조식·수영장 후기</span><span class="lgo">26.05.29 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c02" data-start="540" data-end="600" data-day="3"><div class="ctop"><span class="time">09:00~10:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c02" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">Mandai 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Singapore%20Zoo%20Singapore" target="_blank" rel="noopener">📍Singapore Zoo</a></div><div class="desc">대중교통 이동</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Swiss%C3%B4tel%20The%20Stamford%20Singapore&destination=Singapore%20Zoo%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Swissôtel The Stamford → Singapore Zoo</span><span class="dgo">길찾기 ↗</span></a><button class="reftoggle" data-toggle="c02"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c02"><a class="reflink" href="https://blog.naver.com/sweetphd/224299489007" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">스위소텔→동물원 대중교통 후기</span><span class="lgo">26.05.28 ↗</span></a><a class="reflink" href="https://blog.naver.com/hamzzibubu_travel/224289533658" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">입장권·셔틀 M2·트램 후기</span><span class="lgo">26.05.12 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c03" data-start="600" data-end="750" data-day="3"><div class="ctop"><span class="time">10:00~12:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c03" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🦁</span><span class="ttl-tx">Singapore Zoo</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Singapore%20Zoo%20Singapore" target="_blank" rel="noopener">📍Singapore Zoo</a></div><div class="desc">운영 8:30~18:00 (입장마감 17:00) — 검증: 26.06 · 오랑우탄 / 트램 / QR 입장</div><button class="reftoggle" data-toggle="c03"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c03"><a class="reflink" href="https://blog.naver.com/f9818/224297692030" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">동물원 후기(지도 포함)</span><span class="lgo">26.05.27 ↗</span></a><a class="reflink" href="https://blog.naver.com/trueloveu/224293069733" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">만다이 티켓 할인 팁</span><span class="lgo">26.05.19 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c04" data-start="750" data-end="780" data-day="3"><div class="ctop"><span class="time">12:30~13:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c04" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍔</span><span class="ttl-tx">간단 점심</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=KFC%20%2F%20%ED%91%B8%EB%93%9C%EC%BD%94%ED%8A%B8%20Singapore" target="_blank" rel="noopener">📍KFC / 푸드코트</a></div></div></div></div></div><div class="item"><div class="card" id="card-c05" data-start="780" data-end="900" data-day="3"><div class="ctop"><span class="time">13:00~15:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c05" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛶</span><span class="ttl-tx">River Wonders</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=River%20Wonders%20Singapore" target="_blank" rel="noopener">📍River Wonders</a></div><div class="desc">운영 9:00~18:00 (입장마감 17:00) — 검증: 26.06 · 판다 / 아마존 리버퀘스트 보트는 QR 시간대 확인</div><button class="reftoggle" data-toggle="c05"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c05"><a class="reflink" href="https://blog.naver.com/kingkongasia/224303533043" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">판다·아마존보트·운영시간 핵심정보</span><span class="lgo">26.06.02 ↗</span></a><a class="reflink" href="https://blog.naver.com/lovely_sine/224300204667" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">리버원더스 후기</span><span class="lgo">26.05.30 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c06" data-start="900" data-end="960" data-day="3"><div class="ctop"><span class="time">15:00~16:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c06" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">호텔 복귀</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div><div class="desc">대중교통 이동</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=River%20Wonders%20Singapore&destination=Swiss%C3%B4tel%20The%20Stamford%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">River Wonders → Swissôtel The Stamford</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-c07" data-start="960" data-end="1020" data-day="3"><div class="ctop"><span class="time">16:00~17:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#16a34a;background:#16a34a22">액티비티</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c07" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏊</span><span class="ttl-tx">호텔 수영</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20%2F%20Fairmont%20%EC%88%98%EC%98%81%EC%9E%A5%20Singapore" target="_blank" rel="noopener">📍Swissôtel / Fairmont 수영장</a></div><button class="reftoggle" data-toggle="c07"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-c07"><a class="reflink" href="https://blog.naver.com/lovexloo/224293480988" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">신혼여행 스위소텔 수영장 후기</span><span class="lgo">26.05.19 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c08" data-start="1020" data-end="1080" data-day="3"><div class="ctop"><span class="time">17:00~18:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#a06a3c;background:#a06a3c22">휴식</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c08" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚿</span><span class="ttl-tx">샤워 &amp; 준비</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div></div></div></div></div><div class="item"><div class="card" id="card-c09" data-start="1080" data-end="1170" data-day="3"><div class="ctop"><span class="time">18:00~19:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c09" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌃</span><span class="ttl-tx">SKAI 디너</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=SKAI%20(Swiss%C3%B4tel%2070F)%20Singapore" target="_blank" rel="noopener">📍SKAI (Swissôtel 70F)</a></div><div class="desc">허니문 디너 / 석양 &amp; 시티뷰 · 예약 완료</div><button class="reftoggle" data-toggle="c09"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c09"><a class="reflink" href="https://blog.naver.com/rixinyueyi_/224214006302" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">SKAI 창가석 예약 꿀팁·디너 후기</span><span class="lgo">26.03.12 ↗</span></a><a class="reflink" href="https://blog.naver.com/wonofday/224249185672" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">SKAI 가격·할인 정보</span><span class="lgo">26.04.12 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c10" data-start="1170" data-end="1230" data-day="3"><div class="ctop"><span class="time">19:30~20:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c10" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌃</span><span class="ttl-tx">CHIJMES &amp; Raffles Hotel 산책</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=CHIJMES%20%2F%20Raffles%20Hotel%20Singapore" target="_blank" rel="noopener">📍CHIJMES / Raffles Hotel</a></div><div class="desc">클래식 싱가포르 감성 / 야경 사진 / 라플스 호텔 외관</div><button class="reftoggle" data-toggle="c10"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-c10"><a class="reflink" href="https://blog.naver.com/tnwlsdl702/224298811227" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">차임스 위치·가는법·볼거리</span><span class="lgo">26.05.28 ↗</span></a><a class="reflink" href="https://blog.naver.com/93leede/224299376498" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">래플즈호텔 롱바 포함 후기</span><span class="lgo">26.05.28 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-c11" data-start="1230" data-end="" data-day="3"><div class="ctop"><span class="time">20:30 이후</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#a06a3c;background:#a06a3c22">휴식</span></div><div class="crow"><input type="checkbox" class="chk" data-id="c11" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏨</span><span class="ttl-tx">호텔 복귀 &amp; 휴식</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div></div></div></div></div></div></section><section class="day d4" id="day4"><div class="day-head"><span class="day-badge b4">4일차</span><h3>6/8 (월)</h3></div><p class="day-theme">🚢 디즈니 크루즈 시작 — 체크아웃 → 카야토스트 → 크루즈센터 → Disney Adventure</p><div class="tl"><div class="item"><div class="card" id="card-d01" data-start="480" data-end="570" data-day="4"><div class="ctop"><span class="time">08:00~09:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🧳</span><span class="ttl-tx">짐 정리 &amp; 체크아웃 준비</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div></div></div></div></div><div class="item"><div class="card" id="card-d02" data-start="570" data-end="615" data-day="4"><div class="ctop"><span class="time">09:30~10:15</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#ea580c;background:#ea580c22">식사</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d02" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🍞</span><span class="ttl-tx">Ya Kun Kaya Toast</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Ya%20Kun%20Kaya%20Toast%20Singapore" target="_blank" rel="noopener">📍Ya Kun Kaya Toast</a></div><div class="desc">🍴 카야토스트 세트 (토스트+반숙란 2개+코피) · 반숙란에 간장·후추 뿌려 찍어먹기</div><button class="reftoggle" data-toggle="d02"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-d02"><a class="reflink" href="https://blog.naver.com/kimkw1229/224301669834" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">야쿤 푸난점(시티홀 인근) 후기</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/zusilver_310/224303548929" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">야쿤 vs 토스트박스 비교</span><span class="lgo">26.06.02 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-d03" data-start="615" data-end="630" data-day="4"><div class="ctop"><span class="time">10:15~10:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d03" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🏨</span><span class="ttl-tx">호텔 복귀</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Swiss%C3%B4tel%20The%20Stamford%20Singapore" target="_blank" rel="noopener">📍Swissôtel The Stamford</a></div><div class="desc">짐 픽업</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Ya%20Kun%20Kaya%20Toast%20Singapore&destination=Swiss%C3%B4tel%20The%20Stamford%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Ya Kun Kaya Toast → Swissôtel The Stamford</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-d04" data-start="630" data-end="660" data-day="4"><div class="ctop"><span class="time">10:30~11:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d04" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">Marina Bay Cruise Centre 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20Cruise%20Centre%20Singapore" target="_blank" rel="noopener">📍Marina Bay Cruise Centre</a></div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Swiss%C3%B4tel%20The%20Stamford%20Singapore&destination=Marina%20Bay%20Cruise%20Centre%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Swissôtel The Stamford → Marina Bay Cruise Centre</span><span class="dgo">길찾기 ↗</span></a><button class="reftoggle" data-toggle="d04"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-d04"><a class="reflink" href="https://blog.naver.com/joyaim/224300022489" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">크루즈 탑승기·첫째날 후기</span><span class="lgo">26.05.29 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-d05" data-start="660" data-end="720" data-day="4"><div class="ctop"><span class="time">11:00~12:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d05" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚢</span><span class="ttl-tx">Disney Adventure 승선 수속</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20Cruise%20Centre%20Singapore" target="_blank" rel="noopener">📍Marina Bay Cruise Centre</a></div><div class="desc">승선 시간(Port Arrival Time) 12:00 · 1시간 전 도착해 수속 준비</div><button class="reftoggle" data-toggle="d05"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-d05"><a class="reflink" href="https://blog.naver.com/qkdrkdud/224303241947" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">첫 탑승 실수 5가지(꿀팁)</span><span class="lgo">26.06.01 ↗</span></a><a class="reflink" href="https://blog.naver.com/prodiary911/224302033871" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">탑승 전 액티비티 예약방법</span><span class="lgo">26.05.31 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-d06" data-start="720" data-end="" data-day="4"><div class="ctop"><span class="time">12:00~저녁</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#2563eb;background:#2563eb22">관광</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d06" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛳️</span><span class="ttl-tx">승선 &amp; 크루즈 내부 탐방</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Disney%20Adventure%20Singapore" target="_blank" rel="noopener">📍Disney Adventure</a></div><div class="desc">수영장 / 포토존 / 식당</div><button class="reftoggle" data-toggle="d06"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-d06"><a class="reflink" href="https://blog.naver.com/nano_prism/224291883596" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">테마공간·식당 디테일 톺아보기</span><span class="lgo">26.05.19 ↗</span></a><a class="reflink" href="https://blog.naver.com/nano_prism/224300552004" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">다이닝 레스토랑별 음식 후기</span><span class="lgo">26.05.30 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-d07" data-start="" data-end="" data-day="4"><div class="ctop"><span class="time">저녁</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#8b5cf6;background:#8b5cf622">야경·쇼</span></div><div class="crow"><input type="checkbox" class="chk" data-id="d07" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🌃</span><span class="ttl-tx">디즈니 쇼 &amp; 첫날 즐기기</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Disney%20Adventure%20Singapore" target="_blank" rel="noopener">📍Disney Adventure</a></div><div class="desc">디즈니 쇼 / 첫날 적응</div><button class="reftoggle" data-toggle="d07"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-d07"><a class="reflink" href="https://blog.naver.com/gjtlqndls1/224299166822" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">캐릭터 만나는 방법 총정리</span><span class="lgo">26.05.28 ↗</span></a><a class="reflink" href="https://blog.naver.com/mycjddk16/224298810061" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">쇼·불꽃놀이 후기(2일차)</span><span class="lgo">26.05.28 ↗</span></a></div></div></div></div></div></div></section><section class="day d5" id="day5"><div class="day-head"><span class="day-badge b5">5일차</span><h3>6/9 (화)</h3></div><p class="day-theme">🛳️ 크루즈 2일차 — 선상 자유일정 (DCL 앱 기준)</p><div class="tl"><div class="item"><div class="card" id="card-e01" data-start="" data-end="" data-day="5"><div class="ctop"><span class="time">종일</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#16a34a;background:#16a34a22">액티비티</span></div><div class="crow"><input type="checkbox" class="chk" data-id="e01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛳️</span><span class="ttl-tx">선상 자유일정</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Disney%20Adventure%20Singapore" target="_blank" rel="noopener">📍Disney Adventure</a></div><div class="desc">DCL 앱에서 당일 스케줄 확인 / 수영장·덱 / 쇼·캐릭터 그리팅 / 로테이션 다이닝</div><button class="reftoggle" data-toggle="e01"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-e01"><a class="reflink" href="https://blog.naver.com/mycjddk16/224299724035" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">크루즈 3일차 후기(쇼·빙고)</span><span class="lgo">26.05.29 ↗</span></a></div></div></div></div></div></div></section><section class="day d6" id="day6"><div class="day-head"><span class="day-badge b6">6일차</span><h3>6/10 (수)</h3></div><p class="day-theme">🛳️ 크루즈 3일차 — 마지막 밤 · 짐 정리 &amp; 하선 준비</p><div class="tl"><div class="item"><div class="card" id="card-f01" data-start="" data-end="" data-day="6"><div class="ctop"><span class="time">종일</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#16a34a;background:#16a34a22">액티비티</span></div><div class="crow"><input type="checkbox" class="chk" data-id="f01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛳️</span><span class="ttl-tx">선상 자유일정 &amp; 하선 준비</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Disney%20Adventure%20Singapore" target="_blank" rel="noopener">📍Disney Adventure</a></div><div class="desc">마지막 밤 / 짐 정리 / 하선 안내문·객실 정산 확인</div><button class="reftoggle" data-toggle="f01"><span class="arr">▶</span>참고 자료 1</button><div class="refs" id="refs-f01"><a class="reflink" href="https://blog.naver.com/mycjddk16/224300705651" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">크루즈 4일차 총정리 후기</span><span class="lgo">26.05.30 ↗</span></a></div></div></div></div></div></div></section><section class="day d7" id="day7"><div class="day-head"><span class="day-badge b7">7일차</span><h3>6/11 (목)</h3></div><p class="day-theme">🛬 하선 &amp; 귀국 — 창이공항 Jewel → SQ606 14:55</p><div class="tl"><div class="item"><div class="card" id="card-g01" data-start="420" data-end="540" data-day="7"><div class="ctop"><span class="time">07:00~09:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g01" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🧳</span><span class="ttl-tx">하선 준비 &amp; 조식</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Disney%20Adventure%20Singapore" target="_blank" rel="noopener">📍Disney Adventure</a></div><div class="desc">객실 정산 확인 / 짐 최종 점검</div></div></div></div></div><div class="item"><div class="card" id="card-g02" data-start="540" data-end="570" data-day="7"><div class="ctop"><span class="time">09:00~09:30</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g02" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚢</span><span class="ttl-tx">하선</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Marina%20Bay%20Cruise%20Centre%20Singapore" target="_blank" rel="noopener">📍Marina Bay Cruise Centre</a></div><div class="desc">여권·짐 수령 / 입국 절차</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Disney%20Adventure%20Singapore&destination=Marina%20Bay%20Cruise%20Centre%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Disney Adventure → Marina Bay Cruise Centre</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-g03" data-start="570" data-end="600" data-day="7"><div class="ctop"><span class="time">09:30~10:00</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g03" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🚕</span><span class="ttl-tx">창이공항 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Changi%20Airport%20Singapore" target="_blank" rel="noopener">📍Changi Airport</a></div><div class="desc">Grab 약 25분</div><a class="dirbtn" href="https://www.google.com/maps/dir/?api=1&origin=Marina%20Bay%20Cruise%20Centre%20Singapore&destination=Changi%20Airport%20Singapore&travelmode=transit" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">Marina Bay Cruise Centre → Changi Airport</span><span class="dgo">길찾기 ↗</span></a></div></div></div></div><div class="item"><div class="card" id="card-g04" data-start="600" data-end="735" data-day="7"><div class="ctop"><span class="time">10:00~12:15</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#db2777;background:#db277722">쇼핑</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g04" aria-label="완료"><div class="body"><div class="ttl"><span class="em">💎</span><span class="ttl-tx">Jewel 쇼핑 &amp; 관광</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Jewel%20Changi%20Singapore" target="_blank" rel="noopener">📍Jewel Changi</a></div><div class="desc">Rain Vortex 10:00부터 가동 (도착 시간과 딱 맞음) · 기념품 · 약 2시간</div><button class="reftoggle" data-toggle="g04"><span class="arr">▶</span>참고 자료 2</button><div class="refs" id="refs-g04"><a class="reflink" href="https://blog.naver.com/jioong12/224296814055" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">마지막날 창이공항·분수 후기</span><span class="lgo">26.05.26 ↗</span></a><a class="reflink" href="https://blog.naver.com/justice7215/224298252302" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">창이공항 기념품 쇼핑 후기</span><span class="lgo">26.06.02 ↗</span></a></div></div></div></div></div><div class="item"><div class="card" id="card-g05" data-start="735" data-end="765" data-day="7"><div class="ctop"><span class="time">12:15~12:45</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#dc2626;background:#dc262622">체크인</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g05" aria-label="완료"><div class="body"><div class="ttl"><span class="em">✈️</span><span class="ttl-tx">체크인 &amp; 출국심사</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Changi%20Airport%20Singapore" target="_blank" rel="noopener">📍Changi Airport</a></div><div class="desc">SQ606 · 터미널 2 출발 (Jewel에서 이동 10분) / 늦어도 13:00 전 출국장 진입</div></div></div></div></div><div class="item"><div class="card" id="card-g06" data-start="765" data-end="865" data-day="7"><div class="ctop"><span class="time">12:45~14:25</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#db2777;background:#db277722">쇼핑</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g06" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛍️</span><span class="ttl-tx">면세 쇼핑 &amp; 게이트 이동</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Changi%20Airport%20Singapore" target="_blank" rel="noopener">📍Changi Airport</a></div></div></div></div></div><div class="item"><div class="card" id="card-g07" data-start="895" data-end="" data-day="7"><div class="ctop"><span class="time">14:55</span><span class="nowtag" style="display:none">🔴 지금</span><span class="cat" style="color:#6b7280;background:#6b728022">이동</span></div><div class="crow"><input type="checkbox" class="chk" data-id="g07" aria-label="완료"><div class="body"><div class="ttl"><span class="em">🛫</span><span class="ttl-tx">SQ606 출발 → 인천</span><a class="place" href="https://www.google.com/maps/search/?api=1&query=Changi%20Airport%20Singapore" target="_blank" rel="noopener">📍Changi Airport</a></div><div class="desc">22:20 인천(ICN) 도착</div></div></div></div></div></div></section>
+</div>
+
+  <!-- Overview -->
+  <section class="day" id="overview">
+    <h2 class="sec-title">📌 큰 방향 한눈에</h2>
+    <div class="block">
+      <div class="row"><div class="rh"><span class="day-badge b1">금</span>🌏 문화권 &amp; 로컬 탐방</div><div class="rb">포트캐닝 → 아랍스트리트 → 차이나타운 → 리틀인디아 → 라우파삿 → 클락키</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b2">토</span>🌇 미래도시 &amp; MBS</div><div class="rb">Cloud Forest → Flower Dome → MBS → 칠리크랩 → 야경쇼</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b3">일</span>🦁 자연/액티비티 + SKAI</div><div class="rb">만다이 동물원 → 리버 원더스 → SKAI 디너</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b4">월</span>🚢 디즈니 크루즈 시작</div><div class="rb">체크아웃 → 카야토스트 → 크루즈센터 → Disney Adventure</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b5">화</span>🛳️ 크루즈 2일차</div><div class="rb">선상 자유일정 (DCL 앱 일정 확인)</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b6">수</span>🛳️ 크루즈 3일차</div><div class="rb">선상 자유일정 → 마지막 밤 짐 정리 & 하선 준비</div></div>
+      <div class="row"><div class="rh"><span class="day-badge b7">목</span>🛬 하선 & 귀국</div><div class="rb">하선 → 창이공항 Jewel → SQ606 14:55 → 인천 22:20</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">🛍️ 주요 쇼핑몰</h2>
+    <div class="block">
+      <div class="row"><div class="rh">🌇 MBS (The Shoppes)</div><div class="rb"><b>럭셔리 명품 중심</b> (LV / Chanel / Dior / Prada) · Sampan Ride · Apple Store / Bacha Coffee / TWG · Rasapura Masters 푸드코트</div><div class="meta"><span>🕙 10:30~23:00</span><span>📍 약 1.3km</span></div></div>
+      <div class="row"><div class="rh">🛍️ Suntec City</div><div class="rb"><b>4개 타워 약 360개 매장</b> · Don Don Donki / MINISO / Uniqlo · Food Republic · Fountain of Wealth (밤 분수쇼)</div><div class="meta"><span>🕙 10:00~22:00</span><span>📍 약 0.6km · 도보 8분</span></div></div>
+      <div class="row"><div class="rh">🏨 Raffles City</div><div class="rb"><b>숙소와 지하 직결</b> (Swissôtel/Fairmont 아래) · 식음·생필품·약국 · City Hall MRT 연결</div><div class="meta"><span>🕙 10:00~22:00</span><span>📍 0m · 호텔 직결</span></div></div>
+      <div class="row"><div class="rh">✈️ Jewel Changi</div><div class="rb"><b>창이공항 T1 연결</b> · HSBC Rain Vortex (40m 실내폭포) · Shiseido Forest Valley · Canopy Park</div><div class="meta"><span>🕙 10:00~22:00</span><span>📍 약 20km</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">🍽️ 크루즈 다이닝 메뉴 (영문 ↔ 한글)</h2>
+
+    <details class="menud">
+      <summary>🎨 애니메이터스 팔레트 · 애니메이터스 테이블</summary>
+      <div class="msec">에피타이저 (SMALL PLATES)</div>
+      <div class="mi"><div class="men">Korean Barbecue Beef Steamed Bao</div><div class="mko">한국식 BBQ 소고기 찐빵 · 오이피클·고추장 해선소스</div></div>
+      <div class="mi"><div class="men">Rice Noodle Salad</div><div class="mko">쌀국수 샐러드 · 아가베·라임 드레싱, 채소</div></div>
+      <div class="mi"><div class="men">Dragon Roll</div><div class="mko">드래곤롤 · 매운참치롤+민물장어·아보카도·우나기소스</div></div>
+      <div class="mi"><div class="men">Chicken Satay</div><div class="mko">치킨 사테(닭꼬치) · 코코넛라이스·땅콩소스</div></div>
+      <div class="mi"><div class="men">Hearts of Palm</div><div class="mko">야자심 샐러드 · 시트러스 드레싱·팝콘 토핑</div></div>
+      <div class="mi"><div class="men">Romaine Heart Caesar Salad</div><div class="mko">로메인 시저 샐러드 · 방울토마토·파마산·크루통</div></div>
+      <div class="mi"><div class="men">Wonton Soup</div><div class="mko">닭고기 완탕수프 · 생강·배추</div></div>
+      <div class="mi"><div class="men">Molokai Corn and Taro Chowder</div><div class="mko">하와이식 옥수수·타로 차우더 (걸쭉한 수프)</div></div>
+      <div class="msec">빵 (BREAD)</div>
+      <div class="mi"><div class="mko">대파치즈빵 (Spring Onion Cheese) · 흰빵 (Soft White) · 통밀빵 (Whole Wheat)</div></div>
+      <div class="msec">메인 (ENTRÉES)</div>
+      <div class="mi"><div class="men">Laksa Lemak</div><div class="mko">락사 · 싱가포르식 매콤 코코넛 국수 (새우·튀긴두부)</div></div>
+      <div class="mi"><div class="men">Murgh Makhani Butter Chicken</div><div class="mko">버터치킨 커리 · 밥·파라타(난)·라이타</div></div>
+      <div class="mi"><div class="men">Pan-seared Pacific Scallops</div><div class="mko">관자구이 · 트러플 버섯 리조또·헤이즐넛</div></div>
+      <div class="mi"><div class="men">Tofu Poke</div><div class="mko">두부 포케 · 현미밥·채소·와사비레몬 드레싱</div></div>
+      <div class="mi"><div class="men">Pan-seared Branzino Filet</div><div class="mko">농어구이 · 사프란 브로스·감자·올리브</div></div>
+      <div class="mi"><div class="men">⭐ Carved Slow-roasted Rosemary Beef Tenderloin</div><div class="mko">로즈마리 소안심 스테이크 · 파스닙 매시·그린빈</div></div>
+      <div class="mi"><div class="men">Chettinad Vegetable Kurma</div><div class="mko">남인도식 채소 커리 · 코코넛크림·캐슈넛·밥·빵</div></div>
+      <div class="mi"><div class="men">Honey Soy-roasted Duck and Papaya Salad</div><div class="mko">꿀간장 오리구이 + 파파야 샐러드 · 미소생강 드레싱</div></div>
+      <div class="mi"><div class="men">Hainanese Chicken Rice</div><div class="mko">하이난 치킨라이스 · 간장·생강마늘·칠리소스</div></div>
+      <div class="mi"><div class="men">Banana Leaf Steamed Filet of Salmon</div><div class="mko">바나나잎 연어찜 · 흰쌀밥·청경채</div></div>
+      <div class="msec">디저트 (DESSERTS)</div>
+      <div class="mi"><div class="men">Salted Caramel Cheesecake</div><div class="mko">솔티드카라멜 치즈케이크 · 땅콩버터 라이스크리스프</div></div>
+      <div class="mi"><div class="men">Chocolate Decadence</div><div class="mko">다크초콜릿 크림·헤이즐넛 쉬폰 케이크</div></div>
+      <div class="mi"><div class="men">Almond-Pear Tart</div><div class="mko">아몬드·배 타르트 + 바닐라 아이스크림</div></div>
+      <div class="mi"><div class="men">Cookies 'n Cream Sundae</div><div class="mko">쿠키앤크림 선데 · 오레오·초코퍼지·휘핑크림</div></div>
+      <div class="mi"><div class="men">Cappuccino Mousse</div><div class="mko">카푸치노 무스 · 라즈베리 쿨리 (무설탕)</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🎬 헐리우드 스포트라이트 클럽 · 네비게이터스 클럽</summary>
+      <div class="msec">에피타이저 (SMALL PLATES)</div>
+      <div class="mi"><div class="men">Sautéed Maitake Mushrooms</div><div class="mko">잎새버섯 볶음 · 참깨 아티초크 퓌레·시트러스 비네그레트</div></div>
+      <div class="mi"><div class="men">Fennel, Bartlett Pear, Tatsoi Salad</div><div class="mko">펜넬·배·채소 샐러드 · 만체고치즈·호두·셰리 드레싱</div></div>
+      <div class="mi"><div class="men">Porcini-spiced Ahi Tuna Sashimi</div><div class="mko">참치 사시미 · 연근피클·와사비유자 마요</div></div>
+      <div class="mi"><div class="men">Duck Confit Pastilla</div><div class="mko">오리콩피 모로코식 파이 · 대추야자·라즈베리소스</div></div>
+      <div class="mi"><div class="men">Burrata Mozzarella &amp; Prosciutto di Parma 🐷</div><div class="mko">부라타치즈 &amp; 파르마 생햄 · 크랜베리 필로·블러드오렌지</div></div>
+      <div class="mi"><div class="men">Classic Iceberg Wedge 🐷</div><div class="mko">통양상추 샐러드 · 블루치즈 드레싱·베이컨</div></div>
+      <div class="mi"><div class="men">Thai Shrimp Pumpkin Soup</div><div class="mko">태국식 새우 단호박수프 · 코코넛밀크·레몬그라스</div></div>
+      <div class="mi"><div class="men">Roasted Roma Tomato Soup</div><div class="mko">구운 토마토수프 · 바질 크로스티니</div></div>
+      <div class="msec">빵 (BREAD)</div>
+      <div class="mi"><div class="mko">허브 브리오슈 (Mini Herb Brioche) · 흰빵 (Soft White) · 통밀빵 (Whole Wheat)</div></div>
+      <div class="msec">메인 (ENTRÉES)</div>
+      <div class="mi"><div class="men">Thai Boat Noodles</div><div class="mko">태국식 보트누들(쌀국수) · 새우·치킨·땅콩·라임</div></div>
+      <div class="mi"><div class="men">Roasted Butternut Squash Risotto</div><div class="mko">단호박 리조또 · 시금치·헤이즐넛</div></div>
+      <div class="mi"><div class="men">Chicken Tikka Masala</div><div class="mko">치킨 티카마살라 커리 · 지라밥·라이타·파라타</div></div>
+      <div class="mi"><div class="men">Miso-glazed Chilean Sea Bass</div><div class="mko">메로 미소(된장)구이 · 밥·배추김치·청경채</div></div>
+      <div class="mi"><div class="men">Moroccan-spiced Roasted Kabocha and Calabaza</div><div class="mko">모로코식 호박구이 · 쿠스쿠스·병아리콩·피타</div></div>
+      <div class="mi"><div class="men">⭐ Peppered Filet Mignon</div><div class="mko">후추 소안심 스테이크 · 그린빈·감자해시</div></div>
+      <div class="mi"><div class="men">Pav Bhaji Slow-cooked Vegetable Curry</div><div class="mko">인도식 채소커리 · 지라밥·빠브 번(빵)</div></div>
+      <div class="mi"><div class="men">Lobster Salad</div><div class="mko">랍스터 샐러드 · 라임 드레싱·아보카도·자색감자</div></div>
+      <div class="mi"><div class="men">Hainanese Chicken Rice</div><div class="mko">하이난 치킨라이스 · 간장·생강마늘·칠리소스</div></div>
+      <div class="mi"><div class="men">Banana Leaf Steamed Filet of Salmon</div><div class="mko">바나나잎 연어찜 · 흰쌀밥·청경채</div></div>
+      <div class="msec">디저트 (DESSERTS)</div>
+      <div class="mi"><div class="men">Chocolate Molten Cake</div><div class="mko">초콜릿 몰튼케이크(퐁당오쇼콜라) + 말차 아이스크림</div></div>
+      <div class="mi"><div class="men">Ube Crème Brûlée</div><div class="mko">우베(자색참마) 크렘브륄레 · 코코넛 비스코티</div></div>
+      <div class="mi"><div class="men">Blueberry-Lemon Bavarian Cream</div><div class="mko">블루베리·레몬 바바리안 크림 (푸딩류)</div></div>
+      <div class="mi"><div class="men">Strawberry Shortcake Sundae</div><div class="mko">딸기 쇼트케이크 선데 · 바닐라 아이스크림·휘핑</div></div>
+      <div class="mi"><div class="men">Coconut-Tapioca Pudding</div><div class="mko">코코넛 타피오카 푸딩 · 망고딸기 살사 (무설탕)</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🧸 픽사 마켓 · 인챈티드 서머</summary>
+      <div class="msec">에피타이저 (SMALL PLATES)</div>
+      <div class="mi"><div class="men">Pork and Shrimp Shumai 🐷</div><div class="mko">돼지고기·새우 슈마이(딤섬) · 날치알·고추기름</div></div>
+      <div class="mi"><div class="men">Green Papaya Salad</div><div class="mko">그린파파야 샐러드(쏨땀) · 팜슈가 라임 드레싱</div></div>
+      <div class="mi"><div class="men">Summer Roll</div><div class="mko">새우 월남쌈 · 해선장 소스</div></div>
+      <div class="mi"><div class="men">Porcini Sacchetti</div><div class="mko">포르치니버섯 주머니 파스타 · 치즈·프로세코 와인소스</div></div>
+      <div class="mi"><div class="men">Sliced Bresaola</div><div class="mko">브레사올라(이탈리아식 소고기 생햄) · 토마토·염소치즈</div></div>
+      <div class="mi"><div class="men">Baby Gem Salad</div><div class="mko">미니양상추 샐러드 · 구운옥수수·커민 아보카도 드레싱</div></div>
+      <div class="mi"><div class="men">Hot Sour Soup</div><div class="mko">산라탕 (중국식 매콤새콤 수프) · 두부·표고</div></div>
+      <div class="mi"><div class="men">French Onion Soup</div><div class="mko">프렌치 어니언(양파)수프 · 그뤼에르 치즈 크루통</div></div>
+      <div class="msec">빵 (BREAD)</div>
+      <div class="mi"><div class="mko">말차마블빵 (Matcha Marble) · 흰빵 (Soft White) · 통밀빵 (Whole Wheat)</div></div>
+      <div class="msec">메인 (ENTRÉES)</div>
+      <div class="mi"><div class="men">Shiromaru 🐷</div><div class="mko">돈코츠 라멘 · 차슈·계란면·멘마·파</div></div>
+      <div class="mi"><div class="men">Chicken Shahi Korma</div><div class="mko">치킨 샤히코르마 (부드러운 커리) · 밥·난·민트처트니</div></div>
+      <div class="mi"><div class="men">Gemelli Bolognese</div><div class="mko">제멜리(나선형) 파스타 볼로네제 · 소고기 토마토 라구</div></div>
+      <div class="mi"><div class="men">Sesame Halloumi Filo Parcels</div><div class="mko">할루미치즈 페이스트리 튀김 · 고구마 매시·방울토마토</div></div>
+      <div class="mi"><div class="men">Seared Verlasso Salmon Filet</div><div class="mko">연어 스테이크 · 오렌지·펜넬·흑마늘</div></div>
+      <div class="mi"><div class="men">⭐ Roasted Prime Rib of Beef</div><div class="mko">프라임립 소고기 스테이크 · 더블베이크 감자·트러플 와인소스</div></div>
+      <div class="mi"><div class="men">Baingan Bharta</div><div class="mko">인도식 가지볶음 커리 · 바스마티밥·빠빠덤(빵)</div></div>
+      <div class="mi"><div class="men">Mango-Chicken Salad</div><div class="mko">망고 닭가슴살 샐러드 · 라임·고수 드레싱</div></div>
+      <div class="mi"><div class="men">Hainanese Chicken Rice</div><div class="mko">하이난 치킨라이스 · 간장·생강마늘·칠리소스</div></div>
+      <div class="msec">디저트 (DESSERTS)</div>
+      <div class="mi"><div class="men">White Chocolate Bread Pudding</div><div class="mko">화이트초코 브레드푸딩 + 바닐라 아이스크림</div></div>
+      <div class="mi"><div class="men">Lemon Thai Basil Tart</div><div class="mko">레몬 타이바질 타르트 · 라즈베리소스</div></div>
+      <div class="mi"><div class="men">Orange-Almond Cake</div><div class="mko">오렌지 아몬드 케이크 · 구아바젤·리치 요거트크림</div></div>
+      <div class="mi"><div class="men">Chocolate Fudge Sundae</div><div class="mko">초코퍼지 선데 · 피칸 브라우니·휘핑크림</div></div>
+      <div class="mi"><div class="men">Coconut Rice Pudding</div><div class="mko">코코넛 라이스푸딩 · 딸기라임 살사 (무설탕)</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🍕 Pizza Planet — 피자 (토이스토리)</summary>
+      <div class="msec">피자 · 거의 종일 운영 · 무료</div>
+      <div class="mi"><div class="men">Margherita Pizza</div><div class="mko">마르게리타 · 산마르자노 토마토소스·방울토마토·모차렐라·바질</div></div>
+      <div class="mi"><div class="men">Pepperoni Pizza</div><div class="mko">페퍼로니 · 토마토소스·페퍼로니·모차렐라·바질</div></div>
+      <div class="mi"><div class="men">Four Cheese Pizza</div><div class="mko">포치즈 · 고르곤졸라·모차렐라·파마산·탈레지오</div></div>
+      <div class="mi"><div class="men">Barbecue Chicken Pizza</div><div class="mko">BBQ치킨 · 모차렐라·적양파·구운파프리카·고수</div></div>
+      <div class="mi"><div class="men">Plant-based Sausage Pizza</div><div class="mko">식물성 소시지 · 시금치·버섯·타임·식물성 치즈</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🥙 Cosmic Kebabs — 중동식 (미즈 마블)</summary>
+      <div class="msec">보울/플래터 직접 구성 · 무료</div>
+      <div class="mi"><div class="men">Grilled Kebabs</div><div class="mko">그릴 케밥</div></div>
+      <div class="mi"><div class="men">Shawarma</div><div class="mko">샤와르마 (회전구이 고기)</div></div>
+      <div class="mi"><div class="men">Vegetable Shish</div><div class="mko">채소 꼬치구이</div></div>
+      <div class="mi"><div class="men">Char-grilled Spiced Sausage</div><div class="mko">직화 향신 소시지</div></div>
+      <div class="mi"><div class="men">Falafel</div><div class="mko">팔라펠 (병아리콩 튀김)</div></div>
+      <div class="mi"><div class="men">Sides &amp; Breads</div><div class="mko">후무스 · 적양배추 피클 · 타불레 샐러드 · 바바가누쉬(가지 딥) · 수막 적양파 · 피타빵 · 시즌드 감자튀김</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🐯 Mowgli's Eatery — 인도식 (정글북) ⭐</summary>
+      <div class="msec">보울/플래터 직접 구성 · 무료 · DCL 함대 전체에서 호평</div>
+      <div class="mi"><div class="men">Tandoori Chicken</div><div class="mko">탄두리 치킨</div></div>
+      <div class="mi"><div class="men">Tandoori Lamb Hariyali</div><div class="mko">탄두리 양고기 하리얄리 (허브 양념)</div></div>
+      <div class="mi"><div class="men">Butter Chicken</div><div class="mko">버터치킨</div></div>
+      <div class="mi"><div class="men">Kerala Fish Curry</div><div class="mko">케랄라식 생선커리</div></div>
+      <div class="mi"><div class="men">Tandoori Vegetable Momos</div><div class="mko">탄두리 채소 모모 (만두)</div></div>
+      <div class="mi"><div class="men">Sides &amp; Breads</div><div class="mko">처트니 · 난 · 라이타(요거트) · 향신밥 · 파라타 · 풀라오(볶음밥) · 향신 채소요리</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🌺 Gramma Tala's Kitchen — 태평양/아시아 (모아나)</summary>
+      <div class="msec">무료 · 상세 메뉴는 현장/DCL 앱 확인</div>
+      <div class="mi"><div class="men">Fried Chicken / Hainanese Chicken Rice</div><div class="mko">프라이드 치킨 / 하이난 치킨라이스 (대표 메뉴)</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🍔 Stitch's 'Ohana Grill — 버거/그릴 (릴로&스티치)</summary>
+      <div class="msec">무료</div>
+      <div class="mi"><div class="men">Gochujang Burger</div><div class="mko">고추장 버거 · 앵거스 패티·브리오슈번·포토벨로 버섯·홍생강·김치·바삭양파·고추장마요</div></div>
+      <div class="mi"><div class="men">The Classic</div><div class="mko">클래식 치즈버거 · 앵거스·양상추·토마토·피클·체다·참깨 브리오슈번</div></div>
+      <div class="mi"><div class="men">The 626</div><div class="mko">프라이드치킨 샌드위치 · 버터밀크 양념 치킨·양상추·토마토·딜랜치소스·고구마번</div></div>
+      <div class="mi"><div class="men">Black and Blue Burger</div><div class="mko">블루치즈 버거 · 케이준 앵거스·블루치즈·양상추·적양파피클·차이브 아이올리</div></div>
+      <div class="mi"><div class="men">Impossible Burger</div><div class="mko">식물성 패티 버거 · 타라곤 아이올리·샬롯잼·통밀번</div></div>
+      <div class="mi"><div class="men">Barbecue Huli-Huli Pulled Pork</div><div class="mko">하와이식 훌리훌리 BBQ 풀드포크 · 어니언링·구운 파인애플·하와이안 스위트롤</div></div>
+      <div class="mi"><div class="men">All Beef Hot Dog / Bratwurst</div><div class="mko">핫도그 / 브라트부르스트 · 프레첼번·김치·큐피 와사비마요</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🧋 Bewitching Boba and Brews — 음료 (인어공주)</summary>
+      <div class="msec">버블티·스무디 · 무료 (Disney Discovery Reef 내)</div>
+      <div class="mi"><div class="men">Sea Witch Emerald Essence</div><div class="mko">그린주스 · 케일·사과·레몬·자스민티</div></div>
+      <div class="mi"><div class="men">Ursula Magic Smoothie</div><div class="mko">우르술라 스무디 · 블루베리·포도·요거트·오트 보바·블루 스피루리나</div></div>
+      <div class="mi"><div class="men">Tentacle Avocado Potion</div><div class="mko">아보카도 스무디 · 케일·요거트·오트 보바·치아씨드</div></div>
+      <div class="mi"><div class="men">Sunken Treasure Mango Brew</div><div class="mko">망고 스무디 · 요거트·오트 보바</div></div>
+      <div class="mi"><div class="men">Mermaid's Berry Kiss</div><div class="mko">베리 음료 · 딸기·블루베리·라즈베리·자스민티</div></div>
+      <div class="mi"><div class="men">Siren Citrus Storm</div><div class="mko">시트러스 음료 · 오렌지·레몬·라임·자스민티</div></div>
+      <div class="mi"><div class="men">Mystic Tide Matcha / Enchanted Jasmine Milk</div><div class="mko">말차 밀크티(흑당 보바) / 자스민 밀크티</div></div>
+      <div class="mi"><div class="men">Add-ons</div><div class="mko">토핑 추가: 흑당 보바 · 치아씨드 · 오트 팝핑 보바</div></div>
+    </details>
+
+    <details class="menud">
+      <summary>🍦 Wheezy's Freezies — 아이스크림 (토이스토리)</summary>
+      <div class="msec">소프트 아이스크림·프로즌 · 무료 셀프</div>
+      <div class="mi"><div class="mko">소프트서브 아이스크림 (셀프 서비스, 종일 운영)</div></div>
+    </details>
+    <details class="menud">
+      <summary>🛎️ 룸서비스 (24시간 · 조식 별도)</summary>
+      <div class="msec">식사</div>
+      <div class="mi"><div class="men">All Hands on Deck</div><div class="mko">인터내셔널 치즈 플래터 · 크래커·미니 바비벨치즈</div></div>
+      <div class="mi"><div class="men">Chicken Wonton Soup</div><div class="mko">치킨 완탕수프 · 버섯·계란면·청경채</div></div>
+      <div class="mi"><div class="men">Rasam Indian Tomato Soup</div><div class="mko">인도식 토마토수프(라삼) · 난</div></div>
+      <div class="mi"><div class="men">Pennette Bolognaise</div><div class="mko">펜네 볼로네제 파스타 · 갈릭 크로스티니</div></div>
+      <div class="mi"><div class="men">Grilled Angus American Cheeseburger</div><div class="mko">앵거스 치즈버거 · 브리오슈번·딜피클·채소칩</div></div>
+      <div class="mi"><div class="men">Crisp Breaded Chicken Tenders</div><div class="mko">치킨텐더 · 유자마요·진저갈릭 샐러드</div></div>
+      <div class="mi"><div class="men">Dan-Dan Noodles 🐷</div><div class="mko">단단면 · 매콤 돼지고기 비빔면·사천후추</div></div>
+      <div class="mi"><div class="men">Dal Makhani</div><div class="mko">달 마카니 (렌틸콩 커리) · 파라타·라이타</div></div>
+      <div class="mi"><div class="men">Grilled Salmon Salad</div><div class="mko">연어구이 샐러드 · 사과크랜베리·허니디종 드레싱</div></div>
+      <div class="msec">디저트</div>
+      <div class="mi"><div class="men">New York Cheesecake</div><div class="mko">뉴욕 치즈케이크 · 라즈베리 가나슈</div></div>
+      <div class="mi"><div class="men">Chocolate Truffle Cake</div><div class="mko">초콜릿 트러플 케이크 · 브라우니·헤이즐넛 스프레드</div></div>
+    </details>
+  </section>
+
+  <p class="foot">🇸🇬 싱가포르 3박 + 🛳️ 디즈니 크루즈 3박 · 허니문<br>오프라인 저장용 · 비행기 모드에서도 열림 (블로그 링크는 인터넷 필요)<br>기준 데이터: 2026-05-28 노션 · 블로그 링크: 2026-06-02 수집 (최근 6개월 내 작성글)</p>
+</div>
+
+<button class="top-btn" id="topBtn" aria-label="맨 위로">↑</button>
+
+<div class="imodal" id="imodal">
+  <div class="sheet">
+    <h3>📲 홈 화면에 앱처럼 추가하기</h3>
+    <ol id="iosGuide">
+      <li>아래쪽 <b>공유 버튼 (□↑)</b> 을 탭하세요</li>
+      <li>메뉴를 올려서 <b>'홈 화면에 추가'</b> 를 탭</li>
+      <li><b>'추가'</b> 를 누르면 🇸🇬 아이콘이 생겨요</li>
+    </ol>
+    <p class="ihint">✅ 한 번 추가하면, 인터넷이 없어도(크루즈·비행기 안에서도) 홈 화면 아이콘으로 바로 열립니다.<br>※ Safari에서 추가해주세요 (인앱 브라우저 ✕)</p>
+    <button class="close" id="imodalClose">닫기</button>
+  </div>
+</div>
+
+<script>
+/* 안드로이드 크롬: 설치 프롬프트 이벤트 캐치 (전역, 빠르게 등록) */
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;
+  var b=document.getElementById('installBtn'); if(b)b.style.display='block';});
+
+/* ===== 일정 데이터 (노션 2026-05-28 기준) ===== */
+var DAYS=[
+ {n:1,date:"2026-06-05",label:"6/5 (금)",theme:"🌏 문화권 & 로컬 탐방 — 포트캐닝 → 아랍스트리트 → 차이나타운 → 리틀인디아 → 라우파삿 → 클락키"},
+ {n:2,date:"2026-06-06",label:"6/6 (토)",theme:"🌇 미래도시 & MBS — Cloud Forest → Flower Dome → MBS → 칠리크랩 → 야경쇼"},
+ {n:3,date:"2026-06-07",label:"6/7 (일)",theme:"🦁 자연/액티비티 + 쇼핑 + SKAI — 만다이 동물원 → 리버 원더스 → SKAI 디너"},
+ {n:4,date:"2026-06-08",label:"6/8 (월)",theme:"🚢 디즈니 크루즈 시작 — 체크아웃 → 카야토스트 → 크루즈센터 → Disney Adventure"},
+ {n:5,date:"2026-06-09",label:"6/9 (화)",theme:"🛳️ 크루즈 2일차 — 선상 자유일정 (DCL 앱 기준)"},
+ {n:6,date:"2026-06-10",label:"6/10 (수)",theme:"🛳️ 크루즈 3일차 — 마지막 밤 · 짐 정리 & 하선 준비"},
+ {n:7,date:"2026-06-11",label:"6/11 (목)",theme:"🛬 하선 & 귀국 — 창이공항 Jewel → SQ606 14:55"}
+];
+var CAT={
+ "이동":"#6b7280","식사":"#ea580c","관광":"#2563eb","쇼핑":"#db2777",
+ "액티비티":"#16a34a","휴식":"#a06a3c","체크인":"#dc2626","야경·쇼":"#8b5cf6","후보":"#ca8a04"
+};
+var ITEMS=[
+ {id:"a01",d:1,t:"05:00~06:00",em:"✈️",ti:"싱가포르 도착 & 입국",pl:"Changi Airport",cat:"체크인",ds:"SQ605 · SG Arrival Card 사전 제출 필수",lk:[{l:"SG 입국신고서 5분 작성법(MYICA 앱)",u:"https://blog.naver.com/jiyun0_0-/224297047200",dt:"26.05.26"},{l:"SG Arrival Card 작성+입국 꿀팁",u:"https://blog.naver.com/ssssss8201/224301360399",dt:"26.05.31"}]},
+ {id:"a02",d:1,t:"06:00~06:40",em:"🚇",ti:"호텔 이동",pl:"MRT",cat:"이동",ds:"",lk:[{l:"창이공항→시내 4가지 방법 총정리",u:"https://blog.naver.com/sg__merli/224298043507",dt:"26.05.29"},{l:"공항→시내 MRT 탑승 실후기",u:"https://blog.naver.com/herimaru/224298235994",dt:"26.05.27"}]},
+ {id:"a03",d:1,t:"06:40~07:00",em:"🧳",ti:"Swissôtel 짐 맡기기",pl:"Swissôtel The Stamford",cat:"체크인",ds:"",lk:[{l:"스위소텔 스위트 업그레이드 후기",u:"https://blog.naver.com/perfectround/224300910944",dt:"26.05.30"},{l:"스위소텔 마리나베이 룸 리뷰",u:"https://blog.naver.com/daily_hyunny/224295348149",dt:"26.05.19"}]},
+ {id:"a04",d:1,t:"07:00~08:00",em:"🌳",ti:"Fort Canning Park 산책",pl:"Fort Canning Park",cat:"관광",ds:"트리터널 / 공원 산책 / 아침 사진",lk:[{l:"포트캐닝 트리터널 방문기",u:"https://blog.naver.com/ssos_2/224301204599",dt:"26.05.30"},{l:"포트캐닝 트리공원 DAY1 후기",u:"https://blog.naver.com/yoony0716/224299421497",dt:"26.05.28"}]},
+ {id:"a05",d:1,t:"08:00~09:00",em:"🥐",ti:"Tiong Bahru Bakery Safari",pl:"Tiong Bahru Bakery",cat:"식사",ds:"매일 8:00 오픈 · 🍴 크루아상·쿠인아망 + 플랫화이트",lk:[{l:"티옹바루 베이커리 후기",u:"https://blog.naver.com/milo_bahama/224290639401",dt:"26.05.26"},{l:"티옹바루 베이커리 포함 여행기",u:"https://blog.naver.com/summerwwavve/224298102163",dt:"26.05.27"}]},
+ {id:"a06",d:1,t:"09:00~09:20",em:"🚇",ti:"리틀인디아 이동",pl:"MRT",cat:"이동",ds:"",lk:[]},
+ {id:"a07",d:1,t:"09:20~10:40",em:"🪔",ti:"리틀인디아",pl:"Little India",cat:"관광",ds:"Sri Veeramakaliamman Temple / Tekka Centre / Mustafa Centre / MINISO",lk:[{l:"무스타파센터 기념품 쇼핑 후기",u:"https://blog.naver.com/libbyroad/224298414493",dt:"26.05.27"}]},
+ {id:"a08",d:1,t:"10:40~11:00",em:"🚶",ti:"아랍스트리트 이동",pl:"도보",cat:"이동",ds:"",lk:[]},
+ {id:"a09",d:1,t:"11:00~13:00",em:"🕌",ti:"아랍스트리트 & 하지레인",pl:"Arab Street / Haji Lane",cat:"관광",ds:"Sultan Mosque / Haji Lane / 감성샵 & 벽화거리 · 🍴 잠잠: 치킨 무르타박 / 블랑코: 점보 프론미(새우국수)",lk:[{l:"하지레인·술탄모스크·새우국수 후기",u:"https://blog.naver.com/mozziandsunbi/224302688604",dt:"26.06.01"},{l:"잠잠 추천 메뉴·결제 후기",u:"https://blog.naver.com/ovozzovo_/224293176971",dt:"26.05.19"},{l:"새우국수 비교(블랑코코트)",u:"https://blog.naver.com/ovozzovo_/224286303701",dt:"26.05.12"}]},
+ {id:"a10",d:1,t:"13:00~14:00",em:"🛍️",ti:"Bugis",pl:"Bugis",cat:"쇼핑",ds:"Bugis Junction / Bugis Street",lk:[{l:"부기스 기념품(해피히포·쿠키뮤지엄)",u:"https://blog.naver.com/mary_zip/224301779392",dt:"26.05.31"},{l:"차이나타운·부기스 혼여행기",u:"https://blog.naver.com/silver-_-ji/224302556388",dt:"26.06.01"}]},
+ {id:"a11",d:1,t:"14:00~14:30",em:"🚇",ti:"차이나타운 이동",pl:"MRT",cat:"이동",ds:"",lk:[]},
+ {id:"a12",d:1,t:"14:30~16:00",em:"🍜",ti:"맥스웰 푸드 센터",pl:"Maxwell Food Centre",cat:"식사",ds:"🍴 티안티안 치킨라이스 (10:00~20:00, 월 휴무 — 금요일 OK) + 보리차 · 현금 추천",lk:[{l:"맥스웰·티안티안 치킨라이스 후기",u:"https://blog.naver.com/delii_/224302167080",dt:"26.06.01"},{l:"맥스웰·불아사 방문 후기",u:"https://blog.naver.com/juyou0202/224297190508",dt:"26.05.26"}]},
+ {id:"a13",d:1,t:"16:00~18:00",em:"🏮",ti:"차이나타운 관광",pl:"Chinatown",cat:"관광",ds:"Buddha Tooth Relic Temple (불아사) / Chinatown Street / 기념품샵",lk:[{l:"차이나타운 기념품 가격비교 가이드",u:"https://blog.naver.com/leejin_4u/224301793614",dt:"26.05.31"}]},
+ {id:"a14",d:1,t:"18:00~19:00",em:"💆",ti:"차이나타운 마사지",pl:"Lanxi Pavilion Health Center",cat:"휴식",ds:"1순위: Lanxi Pavilion Health Center (구글맵 예약 가능) / 대안: Crown Foot Reflexology",lk:[{l:"Lanxi Pavilion 실방문 후기",u:"https://blog.naver.com/jyoon8892/224125690639",dt:"25.12.30"},{l:"(대안) Crown Foot 가성비 마사지",u:"https://blog.naver.com/kjw9194/224218112151",dt:"26.03.16"}]},
+ {id:"a15",d:1,t:"19:00~20:30",em:"🍢",ti:"Lau Pa Sat 저녁",pl:"Lau Pa Sat",cat:"식사",ds:"Satay Street (저녁부터 도로 개방) · 🍴 치킨·새우 사테 모둠 + 타이거 맥주 · 현금 편함",lk:[{l:"라우파삿 사테거리 후기",u:"https://blog.naver.com/trip_healing/224302585291",dt:"26.06.01"},{l:"라우파삿 사테 후기",u:"https://blog.naver.com/hana_11-/224288831721",dt:"26.05.12"}]},
+ {id:"a16",d:1,t:"20:30~21:30",em:"🌃",ti:"클락키 산책",pl:"Clarke Quay",cat:"야경·쇼",ds:"싱가포르 리버 / 야경",lk:[{l:"클락키 야경+BBQ 코스 후기",u:"https://blog.naver.com/leejin_4u/224303221393",dt:"26.06.01"},{l:"리버크루즈·야경 명소 코스",u:"https://blog.naver.com/mnj_bds/224301143704",dt:"26.05.31"}]},
+ {id:"a17",d:1,t:"21:30~22:00",em:"🏨",ti:"호텔 복귀",pl:"Swissôtel The Stamford",cat:"휴식",ds:"",lk:[]},
+
+ {id:"b01",d:2,t:"09:00~09:30",em:"🍔",ti:"싱가포르 맥모닝",pl:"McDonald's",cat:"식사",ds:"🍴 한국에 없는 현지 한정 메뉴 노리기 (시즌 파이·로컬 버거)",lk:[{l:"싱가포르 맥도날드 신메뉴 후기",u:"https://blog.naver.com/green_aunt/224293196694",dt:"26.05.19"}]},
+ {id:"b02",d:2,t:"09:00~10:00",em:"🚕",ti:"Gardens by the Bay 이동",pl:"Gardens by the Bay",cat:"이동",ds:"대중교통 이동",lk:[]},
+ {id:"b03",d:2,t:"10:00~11:00",em:"🌸",ti:"Flower Dome",pl:"Gardens by the Bay",cat:"관광",ds:"세계 식물관",lk:[{l:"입장권 예약+플라워돔 솔직후기",u:"https://blog.naver.com/daun1217/224302177614",dt:"26.06.02"},{l:"플라워돔+클라우드포레스트 후기",u:"https://blog.naver.com/f9818/224302781674",dt:"26.06.01"}]},
+ {id:"b04",d:2,t:"11:00~12:30",em:"🌿",ti:"Cloud Forest",pl:"Gardens by the Bay",cat:"관광",ds:"실내 폭포 / 미래도시 분위기",lk:[{l:"3주살이가 알려주는 클라우드포레스트",u:"https://blog.naver.com/dlrhdms711/224303441197",dt:"26.06.02"},{l:"가든스 후기(쥬라기·클라우드)",u:"https://blog.naver.com/naemonamoo-/224301710551",dt:"26.05.31"}]},
+ {id:"b05",d:2,t:"12:30~13:30",em:"🍜",ti:"Song Fa Bak Kut Teh 점심",pl:"Song Fa Bak Kut Teh",cat:"식사",ds:"🍴 폭립 바쿠테 + 유타오(꽈배기 튀김) · 국물 무한 리필",lk:[{l:"송파바쿠테 웨이팅 꿀팁",u:"https://blog.naver.com/hyoding_/224301612426",dt:"26.05.31"},{l:"송파바쿠테 방문기",u:"https://blog.naver.com/loeyb___/224302885554",dt:"26.06.01"}]},
+ {id:"b06",d:2,t:"13:30~17:30",em:"🏨",ti:"MBS DAY",pl:"Marina Bay Sands",cat:"관광",ds:"Bacha Coffee / Apple Store / MBS 쇼핑 / Sampan Ride / SkyPark Observation Deck / Helix Bridge 산책",lk:[{l:"샌즈 라이프스타일 혜택 총정리",u:"https://blog.naver.com/leejin_4u/224294637726",dt:"26.05.19"},{l:"삼판보트·레인오큘러스 무료 꿀팁",u:"https://blog.naver.com/libbyroad/224296235654",dt:"26.05.26"},{l:"스카이파크 전망대 할인법",u:"https://blog.naver.com/young5606/224300912030",dt:"26.05.30"}]},
+ {id:"b07",d:2,t:"17:30~19:30",em:"🦀",ti:"마칸수트라 글루턴스 베이",pl:"Makansutra Gluttons Bay",cat:"식사",ds:"토요일 17:00 오픈 (검증: 26.06) · 🍴 칠리크랩 + 튀긴 번(만터우) + 시리얼새우 · 주문 전 시세 확인",lk:[{l:"글루턴스베이 솔직후기(카드결제)",u:"https://blog.naver.com/hosooksoo_eo/224281991261",dt:"26.05.05"},{l:"글루턴스베이 호커센터 추천",u:"https://blog.naver.com/yeonju0508/224188701111",dt:"26.02.19"}]},
+ {id:"b08",d:2,t:"19:30~20:00",em:"🌇",ti:"Marina Bay 야경 산책",pl:"Marina Bay",cat:"야경·쇼",ds:"워터프론트 / 야경 사진",lk:[{l:"머라이언·마리나베이 산책 후기",u:"https://blog.naver.com/justice7215/224292788338",dt:"26.05.26"}]},
+ {id:"b09",d:2,t:"20:00~20:15",em:"🎆",ti:"Spectra 레이저쇼",pl:"Marina Bay (MBS 앞)",cat:"야경·쇼",ds:"토요일 쇼타임 20:00 / 21:00 / 22:00 · 15분 · 무료 · Event Plaza (15분 전 자리잡기) — 검증: 26.06",lk:[{l:"야경·레이저쇼 시간 총정리",u:"https://blog.naver.com/shalomgoon1/224291796478",dt:"26.05.31"},{l:"스펙트라 분수쇼 직관 후기",u:"https://blog.naver.com/ssos_2/224301244105",dt:"26.05.30"}]},
+ {id:"b10",d:2,t:"20:15~20:30",em:"🚶",ti:"Gardens by the Bay 이동",pl:"Gardens by the Bay",cat:"이동",ds:"도보 이동",lk:[]},
+ {id:"b11",d:2,t:"20:45~21:00",em:"🌳",ti:"Garden Rhapsody 슈퍼트리쇼",pl:"Gardens by the Bay",cat:"야경·쇼",ds:"쇼타임 매일 19:45 / 20:45 · 15분 · 무료 — 검증: 26.06 · 바닥에 누워서 보면 최고",lk:[{l:"슈퍼트리쇼 시간·명당·포토존",u:"https://blog.naver.com/yje5684/224300977552",dt:"26.05.30"},{l:"슈퍼트리쇼 가는법·꿀팁",u:"https://blog.naver.com/ss06748/224300453048",dt:"26.05.29"}]},
+ {id:"b12",d:2,t:"21:00 이후",em:"🚕",ti:"호텔 복귀",pl:"Swissôtel The Stamford",cat:"이동",ds:"대중교통 이동",lk:[]},
+
+ {id:"c01",d:3,t:"08:00~09:00",em:"🍳",ti:"호텔 조식",pl:"Swissôtel The Stamford",cat:"식사",ds:"호텔 조식 여유롭게 즐기기",lk:[{l:"아시안카페 조식 뷔페 리뷰",u:"https://blog.naver.com/daily_hyunny/224295348788",dt:"26.05.19"},{l:"스위소텔 조식·수영장 후기",u:"https://blog.naver.com/jhggyu21/224299478002",dt:"26.05.29"}]},
+ {id:"c02",d:3,t:"09:00~10:00",em:"🚕",ti:"Mandai 이동",pl:"Singapore Zoo",cat:"이동",ds:"대중교통 이동",lk:[{l:"스위소텔→동물원 대중교통 후기",u:"https://blog.naver.com/sweetphd/224299489007",dt:"26.05.28"},{l:"입장권·셔틀 M2·트램 후기",u:"https://blog.naver.com/hamzzibubu_travel/224289533658",dt:"26.05.12"}]},
+ {id:"c03",d:3,t:"10:00~12:30",em:"🦁",ti:"Singapore Zoo",pl:"Singapore Zoo",cat:"관광",ds:"운영 8:30~18:00 (입장마감 17:00) — 검증: 26.06 · 오랑우탄 / 트램 / QR 입장",lk:[{l:"동물원 후기(지도 포함)",u:"https://blog.naver.com/f9818/224297692030",dt:"26.05.27"},{l:"만다이 티켓 할인 팁",u:"https://blog.naver.com/trueloveu/224293069733",dt:"26.05.19"}]},
+ {id:"c04",d:3,t:"12:30~13:00",em:"🍔",ti:"간단 점심",pl:"KFC / 푸드코트",cat:"식사",ds:"",lk:[]},
+ {id:"c05",d:3,t:"13:00~15:00",em:"🛶",ti:"River Wonders",pl:"River Wonders",cat:"관광",ds:"운영 9:00~18:00 (입장마감 17:00) — 검증: 26.06 · 판다 / 아마존 리버퀘스트 보트는 QR 시간대 확인",lk:[{l:"판다·아마존보트·운영시간 핵심정보",u:"https://blog.naver.com/kingkongasia/224303533043",dt:"26.06.02"},{l:"리버원더스 후기",u:"https://blog.naver.com/lovely_sine/224300204667",dt:"26.05.30"}]},
+ {id:"c06",d:3,t:"15:00~16:00",em:"🚕",ti:"호텔 복귀",pl:"Swissôtel The Stamford",cat:"이동",ds:"대중교통 이동",lk:[]},
+ {id:"c07",d:3,t:"16:00~17:00",em:"🏊",ti:"호텔 수영",pl:"Swissôtel / Fairmont 수영장",cat:"액티비티",ds:"",lk:[{l:"신혼여행 스위소텔 수영장 후기",u:"https://blog.naver.com/lovexloo/224293480988",dt:"26.05.19"}]},
+ {id:"c08",d:3,t:"17:00~18:00",em:"🚿",ti:"샤워 & 준비",pl:"Swissôtel The Stamford",cat:"휴식",ds:"",lk:[]},
+ {id:"c09",d:3,t:"18:00~19:30",em:"🌃",ti:"SKAI 디너",pl:"SKAI (Swissôtel 70F)",cat:"식사",ds:"허니문 디너 / 석양 & 시티뷰 · 예약 완료",lk:[{l:"SKAI 창가석 예약 꿀팁·디너 후기",u:"https://blog.naver.com/rixinyueyi_/224214006302",dt:"26.03.12"},{l:"SKAI 가격·할인 정보",u:"https://blog.naver.com/wonofday/224249185672",dt:"26.04.12"}]},
+ {id:"c10",d:3,t:"19:30~20:30",em:"🌃",ti:"CHIJMES & Raffles Hotel 산책",pl:"CHIJMES / Raffles Hotel",cat:"야경·쇼",ds:"클래식 싱가포르 감성 / 야경 사진 / 라플스 호텔 외관",lk:[{l:"차임스 위치·가는법·볼거리",u:"https://blog.naver.com/tnwlsdl702/224298811227",dt:"26.05.28"},{l:"래플즈호텔 롱바 포함 후기",u:"https://blog.naver.com/93leede/224299376498",dt:"26.05.28"}]},
+ {id:"c11",d:3,t:"20:30 이후",em:"🏨",ti:"호텔 복귀 & 휴식",pl:"Swissôtel The Stamford",cat:"휴식",ds:"",lk:[]},
+
+ {id:"d01",d:4,t:"08:00~09:30",em:"🧳",ti:"짐 정리 & 체크아웃 준비",pl:"Swissôtel The Stamford",cat:"체크인",ds:"",lk:[]},
+ {id:"d02",d:4,t:"09:30~10:15",em:"🍞",ti:"Ya Kun Kaya Toast",pl:"Ya Kun Kaya Toast",cat:"식사",ds:"🍴 카야토스트 세트 (토스트+반숙란 2개+코피) · 반숙란에 간장·후추 뿌려 찍어먹기",lk:[{l:"야쿤 푸난점(시티홀 인근) 후기",u:"https://blog.naver.com/kimkw1229/224301669834",dt:"26.06.01"},{l:"야쿤 vs 토스트박스 비교",u:"https://blog.naver.com/zusilver_310/224303548929",dt:"26.06.02"}]},
+ {id:"d03",d:4,t:"10:15~10:30",em:"🏨",ti:"호텔 복귀",pl:"Swissôtel The Stamford",cat:"이동",ds:"짐 픽업",lk:[]},
+ {id:"d04",d:4,t:"10:30~11:00",em:"🚕",ti:"Marina Bay Cruise Centre 이동",pl:"Marina Bay Cruise Centre",cat:"이동",ds:"",lk:[{l:"크루즈 탑승기·첫째날 후기",u:"https://blog.naver.com/joyaim/224300022489",dt:"26.05.29"}]},
+ {id:"d05",d:4,t:"11:00~12:00",em:"🚢",ti:"Disney Adventure 승선 수속",pl:"Marina Bay Cruise Centre",cat:"체크인",ds:"승선 시간(Port Arrival Time) 12:00 · 1시간 전 도착해 수속 준비",lk:[{l:"첫 탑승 실수 5가지(꿀팁)",u:"https://blog.naver.com/qkdrkdud/224303241947",dt:"26.06.01"},{l:"탑승 전 액티비티 예약방법",u:"https://blog.naver.com/prodiary911/224302033871",dt:"26.05.31"}]},
+ {id:"d06",d:4,t:"12:00~저녁",em:"🛳️",ti:"승선 & 크루즈 내부 탐방",pl:"Disney Adventure",cat:"관광",ds:"수영장 / 포토존 / 식당",lk:[{l:"테마공간·식당 디테일 톺아보기",u:"https://blog.naver.com/nano_prism/224291883596",dt:"26.05.19"},{l:"다이닝 레스토랑별 음식 후기",u:"https://blog.naver.com/nano_prism/224300552004",dt:"26.05.30"}]},
+ {id:"d07",d:4,t:"저녁",em:"🌃",ti:"디즈니 쇼 & 첫날 즐기기",pl:"Disney Adventure",cat:"야경·쇼",ds:"디즈니 쇼 / 첫날 적응",lk:[{l:"캐릭터 만나는 방법 총정리",u:"https://blog.naver.com/gjtlqndls1/224299166822",dt:"26.05.28"},{l:"쇼·불꽃놀이 후기(2일차)",u:"https://blog.naver.com/mycjddk16/224298810061",dt:"26.05.28"}]},
+
+ {id:"e01",d:5,t:"종일",em:"🛳️",ti:"선상 자유일정",pl:"Disney Adventure",cat:"액티비티",ds:"DCL 앱에서 당일 스케줄 확인 / 수영장·덱 / 쇼·캐릭터 그리팅 / 로테이션 다이닝",lk:[{l:"크루즈 3일차 후기(쇼·빙고)",u:"https://blog.naver.com/mycjddk16/224299724035",dt:"26.05.29"}]},
+
+ {id:"f01",d:6,t:"종일",em:"🛳️",ti:"선상 자유일정 & 하선 준비",pl:"Disney Adventure",cat:"액티비티",ds:"마지막 밤 / 짐 정리 / 하선 안내문·객실 정산 확인",lk:[{l:"크루즈 4일차 총정리 후기",u:"https://blog.naver.com/mycjddk16/224300705651",dt:"26.05.30"}]},
+
+ {id:"g01",d:7,t:"07:00~09:00",em:"🧳",ti:"하선 준비 & 조식",pl:"Disney Adventure",cat:"체크인",ds:"객실 정산 확인 / 짐 최종 점검",lk:[]},
+ {id:"g02",d:7,t:"09:00~09:30",em:"🚢",ti:"하선",pl:"Marina Bay Cruise Centre",cat:"이동",ds:"여권·짐 수령 / 입국 절차",lk:[]},
+ {id:"g03",d:7,t:"09:30~10:00",em:"🚕",ti:"창이공항 이동",pl:"Changi Airport",cat:"이동",ds:"Grab 약 25분",lk:[]},
+ {id:"g04",d:7,t:"10:00~12:15",em:"💎",ti:"Jewel 쇼핑 & 관광",pl:"Jewel Changi",cat:"쇼핑",ds:"Rain Vortex 10:00부터 가동 (도착 시간과 딱 맞음) · 기념품 · 약 2시간",lk:[{l:"마지막날 창이공항·분수 후기",u:"https://blog.naver.com/jioong12/224296814055",dt:"26.05.26"},{l:"창이공항 기념품 쇼핑 후기",u:"https://blog.naver.com/justice7215/224298252302",dt:"26.06.02"}]},
+ {id:"g05",d:7,t:"12:15~12:45",em:"✈️",ti:"체크인 & 출국심사",pl:"Changi Airport",cat:"체크인",ds:"SQ606 · 터미널 2 출발 (Jewel에서 이동 10분) / 늦어도 13:00 전 출국장 진입",lk:[]},
+ {id:"g06",d:7,t:"12:45~14:25",em:"🛍️",ti:"면세 쇼핑 & 게이트 이동",pl:"Changi Airport",cat:"쇼핑",ds:"",lk:[]},
+ {id:"g07",d:7,t:"14:55",em:"🛫",ti:"SQ606 출발 → 인천",pl:"Changi Airport",cat:"이동",ds:"22:20 인천(ICN) 도착",lk:[]}
+];
+
+/* ===== 유틸 ===== */
+var NOPLACE={"도보":1,"MRT":1};
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function mapUrl(p){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p+" Singapore");}
+function dirUrl(o,d){return "https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(o+" Singapore")+"&destination="+encodeURIComponent(d+" Singapore")+"&travelmode=transit";}
+/* 이동 티켓의 출발→도착 장소 계산 (같은 날 일정 내 직전·직후 실제 장소) */
+function legOf(list,idx){
+  var o=null,d=null;
+  for(var a=idx-1;a>=0;a--){ if(!NOPLACE[list[a].pl]){o=list[a].pl;break;} }
+  if(!NOPLACE[list[idx].pl]){ d=list[idx].pl; }            /* 이동 티켓 자신이 목적지를 가지면 그것 */
+  else{ for(var b=idx+1;b<list.length;b++){ if(!NOPLACE[list[b].pl]){d=list[b].pl;break;} } }
+  if(o&&d&&o!==d) return {o:o,d:d};
+  return null;
+}
+function startMin(t){var m=/^(\d{1,2}):(\d{2})/.exec(t);return m?(+m[1]*60+ +m[2]):null;}
+function endMin(t){var m=/~\s*(\d{1,2}):(\d{2})/.exec(t);return m?(+m[1]*60+ +m[2]):null;}
+function load(k,def){try{var v=localStorage.getItem(k);return v===null?def:v;}catch(e){return def;}}
+function save(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+/* ===== 렌더 ===== */
+function render(){
+  var host=document.getElementById('days'); host.innerHTML='';
+  DAYS.forEach(function(day){
+    var sec=document.createElement('section');
+    sec.className='day d'+day.n; sec.id='day'+day.n;
+    var its=ITEMS.filter(function(i){return i.d===day.n;});
+    var cards=its.map(function(i,idx){return cardHTML(i,idx,its);}).join('');
+    sec.innerHTML='<div class="day-head"><span class="day-badge b'+day.n+'">'+day.n+'일차</span><h3>'+day.label+'</h3></div>'+
+      '<p class="day-theme">'+esc(day.theme)+'</p><div class="tl">'+cards+'</div>';
+    host.appendChild(sec);
+  });
+  bind();
+  refreshDone();
+  highlightNow();
+}
+function cardHTML(i,idx,list){
+  var c=CAT[i.cat]||"#6b7280";
+  var place=i.pl;
+  var placeChip=NOPLACE[place]?'':'<a class="place" href="'+mapUrl(place)+'" target="_blank" rel="noopener">📍'+esc(place)+'</a>';
+  var dir='';
+  if(i.cat==="이동"&&list){
+    var leg=legOf(list,idx);
+    if(leg) dir='<a class="dirbtn" href="'+dirUrl(leg.o,leg.d)+'" target="_blank" rel="noopener"><span class="dic">🗺️</span><span class="dtx">'+esc(leg.o)+' → '+esc(leg.d)+'</span><span class="dgo">길찾기 ↗</span></a>';
+  }
+  var refs='';
+  if(i.lk&&i.lk.length){
+    var links=i.lk.map(function(l){
+      var label=l.l?esc(l.l):'참고 링크';
+      return '<a class="reflink" href="'+esc(l.u)+'" target="_blank" rel="noopener"><span class="lic">🔗</span><span class="ltx">'+label+'</span><span class="lgo">'+(l.dt?esc(l.dt)+' ':'')+'↗</span></a>';
+    }).join('');
+    refs='<button class="reftoggle" data-toggle="'+i.id+'"><span class="arr">▶</span>참고 자료 '+i.lk.length+'</button>'+
+         '<div class="refs" id="refs-'+i.id+'">'+links+'</div>';
+  }
+  var descHTML=i.ds?'<div class="desc">'+esc(i.ds)+'</div>':'';
+  return '<div class="item"><div class="card" id="card-'+i.id+'" data-start="'+(startMin(i.t)===null?'':startMin(i.t))+'" data-end="'+(endMin(i.t)===null?'':endMin(i.t))+'" data-day="'+i.d+'">'+
+    '<div class="ctop"><span class="time">'+esc(i.t)+'</span><span class="nowtag" style="display:none">🔴 지금</span>'+
+    '<span class="cat" style="color:'+c+';background:'+c+'22">'+esc(i.cat)+'</span></div>'+
+    '<div class="crow"><input type="checkbox" class="chk" data-id="'+i.id+'" aria-label="완료">'+
+    '<div class="body"><div class="ttl"><span class="em">'+i.em+'</span><span class="ttl-tx">'+esc(i.ti)+'</span>'+placeChip+'</div>'+
+    descHTML+dir+refs+'</div></div></div></div>';
+}
+
+/* ===== 인터랙션 바인딩 ===== */
+function bind(){
+  document.querySelectorAll('.reftoggle').forEach(function(b){
+    b.addEventListener('click',function(){
+      var id=b.getAttribute('data-toggle');
+      var box=document.getElementById('refs-'+id);
+      b.classList.toggle('open'); box.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.chk').forEach(function(ch){
+    var id=ch.getAttribute('data-id');
+    ch.checked=load('sg-done-'+id,'0')==='1';
+    ch.addEventListener('change',function(){
+      save('sg-done-'+id,ch.checked?'1':'0');
+      refreshDone();
+    });
+  });
+}
+function refreshDone(){
+  var done=0;
+  document.querySelectorAll('.chk').forEach(function(ch){
+    var card=document.getElementById('card-'+ch.getAttribute('data-id'));
+    if(ch.checked){card.classList.add('done');done++;}else{card.classList.remove('done');}
+    var item=card.closest('.item');
+    if(hideDone&&ch.checked){item.style.display='none';}else{item.style.display='';}
+  });
+  document.getElementById('prog').innerHTML='진행 <b>'+done+'</b> / '+ITEMS.length;
+}
+
+/* ===== 지금 일정 하이라이트 ===== */
+function highlightNow(){
+  var now=new Date();
+  var ymd=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  var nowMin=now.getHours()*60+now.getMinutes();
+  var todayDay=null;
+  DAYS.forEach(function(d){if(d.date===ymd)todayDay=d.n;});
+  document.querySelectorAll('.card').forEach(function(card){
+    var tag=card.querySelector('.nowtag'); tag.style.display='none'; card.classList.remove('now');
+    if(todayDay===null)return;
+    if(+card.getAttribute('data-day')!==todayDay)return;
+    var s=card.getAttribute('data-start'),e=card.getAttribute('data-end');
+    if(s===''||e==='')return;
+    if(nowMin>=+s&&nowMin<+e){tag.style.display='';card.classList.add('now');}
+  });
+}
+
+/* ===== D-day ===== */
+function setDday(){
+  var t=new Date(2026,5,5), d1=new Date(2026,5,11);
+  var now=new Date(); var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var diff=Math.round((t-today)/86400000);
+  var el=document.getElementById('dday');
+  if(diff>0)el.textContent='D-'+diff;
+  else if(today>=t&&today<=d1){var n=Math.round((today-t)/86400000)+1;el.textContent='여행 중 · Day '+n;}
+  else if(diff===0)el.textContent='D-DAY 🎉';
+  else el.textContent='여행 완료 ✅';
+}
+
+/* ===== 완료 숨기기 ===== */
+var hideDone=load('sg-hideDone','0')==='1';
+/* ===== 다크모드 ===== */
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';document.querySelector('meta[name=theme-color]').setAttribute('content',t==='dark'?'#101a4d':'#1b2a6b');}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var saved=load('sg-theme','');
+  if(!saved){saved=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}
+  applyTheme(saved);
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    applyTheme(cur);save('sg-theme',cur);
+  });
+
+  var hd=document.getElementById('hideDone'); hd.checked=hideDone;
+  hd.addEventListener('change',function(){hideDone=hd.checked;save('sg-hideDone',hideDone?'1':'0');refreshDone();});
+
+  var memo=document.getElementById('memo'); memo.value=load('sg-memo','');
+  memo.addEventListener('input',function(){save('sg-memo',memo.value);});
+
+
+  render(); setDday();
+  /* 오프라인 캐시 (크루즈 등 인터넷 없는 곳 대비) — https 배포 시에만 작동 */
+  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }
+  setInterval(highlightNow,60000);
+
+  /* 홈 화면에 추가 (PWA 설치) */
+  var ibtn=document.getElementById('installBtn');
+  var imodal=document.getElementById('imodal');
+  var standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
+  if(ibtn&&!standalone){ ibtn.style.display='block'; }
+  if(ibtn){ ibtn.addEventListener('click',function(){
+    if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){deferredPrompt=null;ibtn.style.display='none';}); }
+    else{ imodal.classList.add('open'); }   /* iOS 등: 추가 방법 안내 */
+  }); }
+  document.getElementById('imodalClose').addEventListener('click',function(){imodal.classList.remove('open');});
+  imodal.addEventListener('click',function(e){ if(e.target===imodal) imodal.classList.remove('open'); });
+  window.addEventListener('appinstalled',function(){ if(ibtn) ibtn.style.display='none'; });
+
+  var btn=document.getElementById('topBtn');
+  window.addEventListener('scroll',function(){if(window.scrollY>500)btn.classList.add('show');else btn.classList.remove('show');});
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+});
+</script>
+</body>
+</html>
